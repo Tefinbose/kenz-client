@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   FileCheck2,
   Layers3,
+  LucideIcon,
   MessageSquare,
   Ruler,
 } from "lucide-react";
@@ -15,7 +16,7 @@ export type ServiceDetail = {
   title: string;
   accentTitle: string;
   description: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   capabilities: string[];
   deliverables: string[];
   applications: string[];

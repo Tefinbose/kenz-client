@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ReactNode } from "react";
+import type { MutableRefObject, ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   ContactShadows,
@@ -443,7 +443,25 @@ function SteelFrame() {
    SCENE
 ============================================================ */
 
-function Scene({ reduced }: { reduced: boolean }) {
+/*
+  Rotation is driven imperatively (dragRef / autoSpeedRef), not by a
+  target-chasing damp(). A damp toward a target that itself moves with
+  elapsedTime + a pointer offset overshoots and corrects every time the
+  pointer moves, which reads as the model "over-rotating" right after
+  load. Instead we add a small, constant, delta-time step each frame —
+  the only thing that changes it is a drag or the steady auto-spin.
+*/
+function Scene({
+  reduced,
+  dragRef,
+}: {
+  reduced: boolean;
+  dragRef: MutableRefObject<{
+    active: boolean;
+    velocity: number;
+    idleFor: number;
+  }>;
+}) {
   const group = useRef<THREE.Group>(null);
   const invalidate = useThree((state) => state.invalidate);
 
@@ -452,24 +470,36 @@ function Scene({ reduced }: { reduced: boolean }) {
     invalidate();
   }, [reduced, invalidate]);
 
+  const AUTO_SPEED = 0.12; // rad/s, gentle continuous spin
+  const IDLE_BEFORE_RESUME = 1; // s of no dragging before auto-spin resumes
+
   useFrame((state, delta) => {
     state.camera.lookAt(0, 0, 0);
 
     const g = group.current;
     if (!g) return;
 
-    const target = reduced
-      ? 0.7
-      : 0.7 +
-        state.clock.elapsedTime * 0.16 +
-        state.pointer.x * 0.35;
+    if (reduced) return; // static, final frame only
 
-    g.rotation.y = THREE.MathUtils.damp(
-      g.rotation.y,
-      target,
-      4,
-      delta
-    );
+    const drag = dragRef.current;
+
+    if (drag.active) {
+      // live drag: rotate by the finger/pointer's own movement, full 360
+      g.rotation.y += drag.velocity;
+      drag.velocity = 0;
+      drag.idleFor = 0;
+    } else {
+      drag.idleFor += delta;
+
+      if (drag.idleFor > IDLE_BEFORE_RESUME) {
+        // ease the auto-spin back in instead of snapping to full speed
+        const ramp = Math.min(
+          (drag.idleFor - IDLE_BEFORE_RESUME) / 0.8,
+          1
+        );
+        g.rotation.y += AUTO_SPEED * ramp * delta;
+      }
+    }
   });
 
   return (
@@ -567,12 +597,42 @@ function Scene({ reduced }: { reduced: boolean }) {
    EXPORT
    Fills its parent. Pauses when scrolled out of view and
    respects prefers-reduced-motion (shows the finished frame).
+
+   Drag-to-rotate (full 360°):
+   A plain pointer listener on the wrapper drives dragRef, which
+   Scene reads each frame — no OrbitControls, so it never fights
+   the page's own scrolling on mobile. The first few pixels of a
+   touch are used to decide intent: a mostly-horizontal move is
+   read as "rotate the model" (pointer capture kicks in, page
+   scroll is blocked for that touch); a mostly-vertical move is
+   left alone so the page keeps scrolling normally. A mouse drag
+   always rotates, since there is no scroll conflict.
 ============================================================ */
+
+const DECIDE_PX = 8; // px of movement before we commit to a gesture
 
 export default function SteelStructure() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
   const [reduced, setReduced] = useState(false);
+  const [dragging, setDragging] = useState(false);
+
+  // read every frame by Scene; kept out of React state so dragging
+  // never triggers a re-render
+  const dragRef = useRef({
+    active: false,
+    velocity: 0,
+    idleFor: 999,
+  });
+
+  const gesture = useRef({
+    pointerId: null as number | null,
+    lastX: 0,
+    startX: 0,
+    startY: 0,
+    deciding: false,
+    isTouch: false,
+  });
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -601,8 +661,108 @@ export default function SteelStructure() {
     return () => query.removeEventListener("change", update);
   }, []);
 
+  // Drag-to-rotate, full 360°, mouse + touch
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || reduced) return;
+
+    const ROTATE_SENSITIVITY = 0.012; // rad per px
+
+    const beginDrag = (x: number) => {
+      dragRef.current.active = true;
+      gesture.current.lastX = x;
+      setDragging(true);
+    };
+
+    const endDrag = () => {
+      dragRef.current.active = false;
+      dragRef.current.velocity = 0;
+      dragRef.current.idleFor = 0;
+      gesture.current.pointerId = null;
+      gesture.current.deciding = false;
+      setDragging(false);
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== undefined && e.button > 0) return; // left-click / any touch only
+
+      gesture.current.pointerId = e.pointerId;
+      gesture.current.startX = e.clientX;
+      gesture.current.startY = e.clientY;
+      gesture.current.isTouch = e.pointerType === "touch";
+
+      if (gesture.current.isTouch) {
+        // wait to see if this is a horizontal (rotate) or vertical
+        // (page scroll) gesture before capturing the pointer
+        gesture.current.deciding = true;
+      } else {
+        el.setPointerCapture(e.pointerId);
+        beginDrag(e.clientX);
+      }
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (gesture.current.pointerId !== e.pointerId) return;
+
+      if (gesture.current.deciding) {
+        const dx = e.clientX - gesture.current.startX;
+        const dy = e.clientY - gesture.current.startY;
+
+        if (Math.abs(dx) < DECIDE_PX && Math.abs(dy) < DECIDE_PX) {
+          return; // not enough movement yet to decide
+        }
+
+        gesture.current.deciding = false;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+          // horizontal: claim this touch for rotation
+          el.setPointerCapture(e.pointerId);
+          beginDrag(e.clientX);
+        } else {
+          // vertical: hand it back to the page to scroll
+          gesture.current.pointerId = null;
+          return;
+        }
+      }
+
+      if (!dragRef.current.active) return;
+
+      e.preventDefault();
+
+      const dx = e.clientX - gesture.current.lastX;
+      gesture.current.lastX = e.clientX;
+
+      dragRef.current.velocity += dx * ROTATE_SENSITIVITY;
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      if (gesture.current.pointerId !== e.pointerId) return;
+      endDrag();
+    };
+
+    el.addEventListener("pointerdown", onPointerDown);
+    el.addEventListener("pointermove", onPointerMove, {
+      passive: false,
+    });
+    el.addEventListener("pointerup", onPointerUp);
+    el.addEventListener("pointercancel", onPointerUp);
+    el.addEventListener("pointerleave", onPointerUp);
+
+    return () => {
+      el.removeEventListener("pointerdown", onPointerDown);
+      el.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointerup", onPointerUp);
+      el.removeEventListener("pointercancel", onPointerUp);
+      el.removeEventListener("pointerleave", onPointerUp);
+    };
+  }, [reduced]);
+
   return (
-    <div ref={wrapRef} className="absolute inset-0">
+    <div
+      ref={wrapRef}
+      className="absolute inset-0 touch-pan-y select-none"
+      style={{ cursor: dragging ? "grabbing" : "grab" }}
+    >
       <Canvas
         dpr={[1, 1.75]}
         frameloop={
@@ -615,7 +775,7 @@ export default function SteelStructure() {
           powerPreference: "high-performance",
         }}
       >
-        <Scene reduced={reduced} />
+        <Scene reduced={reduced} dragRef={dragRef} />
       </Canvas>
     </div>
   );
