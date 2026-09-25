@@ -12,6 +12,8 @@
     "@babylonjs/core": "^9.28.0",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.8.0",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "framer-motion": "^13.4.3",
     "gsap": "^3.15.0",
     "lucide-react": "^1.47.0",

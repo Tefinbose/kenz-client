@@ -536,3 +536,24 @@ body {
 .card-surface:hover::before {
   opacity: 1;
 }
+
+/* ========================================
+   SHIMMER SWEEP (ShimmerText)
+   ======================================== */
+@keyframes shimmer-sweep {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   SPIN BORDER (AnimatedBorderCard)
+   ======================================== */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-border {
+  to { --angle: 360deg; }
+}
