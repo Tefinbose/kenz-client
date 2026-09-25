@@ -97,7 +97,7 @@ const cardsData: ContactCardData[] = [
     id: "email",
     code: "EML-03",
     icon: Mail,
-    badge: "Official Inquiry Desk",
+    badge: "Official Support Desk",
     category: "Electronic Mail",
     title: "Official RFQ Inbox",
     value: "sales@kenzengineering.com",

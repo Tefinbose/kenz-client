@@ -235,15 +235,7 @@ export default function ProjectsPage() {
               <div className="pointer-events-none absolute bottom-3 left-3 h-3 w-3 border-b-2 border-l-2 border-copper-400/50" />
               <div className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b-2 border-r-2 border-copper-400/50" />
 
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-400">Project Registry</span>
-                </div>
-                <span className="font-mono text-[10px] text-white/40">KENZ-PRJ // 2026</span>
-              </div>
-
-              <div className="mt-6 flex items-start gap-4">
+              <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-copper-500/30 bg-copper-500/15 text-copper-400 shadow-inner">
                   <Cpu size={22} className="animate-[pulse_3s_ease-in-out_infinite]" />
                 </div>

@@ -44,7 +44,7 @@ const reveal =
 
 export default function Hero() {
   return (
-    <section className="relative isolate min-h-[calc(100svh-70px)] overflow-hidden bg-navy-950 text-white min-[901px]:min-h-[calc(100svh-110px)]">
+    <section id="home" className="relative isolate min-h-[calc(100svh-70px)] overflow-hidden bg-navy-950 text-white min-[901px]:min-h-[calc(100svh-110px)]">
       <style>{`
         @keyframes hero-fade-up {
           from { opacity: 0; transform: translateY(18px); }

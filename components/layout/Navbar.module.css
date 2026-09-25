@@ -209,6 +209,7 @@
 
 .logo {
   position: relative;
+  z-index: 10;
 
   width: 185px;
   height: 100%;
@@ -219,6 +220,7 @@
   align-items: center;
 
   text-decoration: none;
+  cursor: pointer;
 }
 
 /* The frame crops the empty space around the artwork */
@@ -307,6 +309,7 @@
 
 .logoImage {
   position: absolute;
+  pointer-events: none;
 
   left: -4px;
   top: 50%;

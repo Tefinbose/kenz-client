@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowUp,
   ArrowUpRight,
@@ -60,6 +63,34 @@ const iconBox =
   "grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/5 text-copper-400 transition-colors";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleHomeNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+      return;
+    }
+
+    if (pathname === "/") {
+      e.preventDefault();
+      const hero = document.getElementById("home");
+      if (hero) {
+        hero.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } else {
+      e.preventDefault();
+      router.push("/");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  };
+
+  const handleBackToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <footer className="bg-navy-950 text-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -100,8 +131,9 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
+              onClick={handleHomeNavigation}
               aria-label="Kenz Engineering LLC — home"
-              className={`relative block h-[84px] w-[235px] overflow-hidden ${focusRing}`}
+              className={`relative block h-[84px] w-[235px] cursor-pointer overflow-hidden ${focusRing}`}
             >
               <Image
                 src="/kenz-logo.png"
@@ -142,7 +174,11 @@ export default function Footer() {
             <ul className="mt-6 flex flex-col gap-3.5">
               {company.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className={linkClass}>
+                  <Link
+                    href={item.href}
+                    onClick={item.href === "/" ? handleHomeNavigation : undefined}
+                    className={linkClass}
+                  >
                     {item.name}
                   </Link>
                 </li>
@@ -247,15 +283,16 @@ export default function Footer() {
               support.
             </p>
 
-            <a
-              href="#"
+            <button
+              type="button"
+              onClick={handleBackToTop}
               className={`group inline-flex w-fit items-center gap-2 text-xs font-medium text-steel-400 transition-colors hover:text-white ${focusRing}`}
             >
               Back to top
               <span className="grid h-7 w-7 place-items-center rounded-full border border-white/15 transition-colors group-hover:border-copper-500 group-hover:text-copper-400">
                 <ArrowUp className="h-3.5 w-3.5" />
               </span>
-            </a>
+            </button>
           </div>
         </div>
       </div>

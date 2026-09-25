@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, SyntheticEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowUpRight,
   Box,
@@ -89,6 +89,7 @@ type Indicator = {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -261,6 +262,28 @@ export default function Navbar() {
     setMobileServicesOpen(false);
   };
 
+  const handleHomeNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    closeMobileMenu();
+    // Allow modifier clicks (Cmd+click, Ctrl+click, middle click) to open in new tab
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+      return;
+    }
+
+    if (pathname === "/") {
+      e.preventDefault();
+      const hero = document.getElementById("home");
+      if (hero) {
+        hero.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } else {
+      e.preventDefault();
+      router.push("/");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  };
+
   const renderDesktopLink = (
     link: { name: string; href: string },
     order: number
@@ -275,6 +298,7 @@ export default function Navbar() {
       aria-current={isActive(link.href) ? "page" : undefined}
       onMouseEnter={moveIndicator}
       onFocus={moveIndicator}
+      onClick={link.href === "/" ? handleHomeNavigation : undefined}
     >
       {link.name}
     </Link>
@@ -326,7 +350,7 @@ export default function Navbar() {
               href="/"
               className={`${styles.logo} ${styles.enter}`}
               style={stagger(0)}
-              onClick={closeMobileMenu}
+              onClick={handleHomeNavigation}
               aria-label="Kenz Engineering LLC — home"
             >
               <span className={styles.logoFrame}>
@@ -546,7 +570,7 @@ export default function Navbar() {
                     : ""
                 }`}
                 style={stagger(i)}
-                onClick={closeMobileMenu}
+                onClick={link.href === "/" ? handleHomeNavigation : closeMobileMenu}
                 aria-current={
                   isActive(link.href) ? "page" : undefined
                 }
