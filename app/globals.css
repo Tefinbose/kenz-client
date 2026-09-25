@@ -1,0 +1,479 @@
+@import "tailwindcss";
+
+@theme {
+  /* ========================================
+     KENZ ENGINEERING FONTS
+     ======================================== */
+
+  --font-display: var(--font-big-shoulders);
+  --font-body: var(--font-plex);
+
+  /* ========================================
+     NAVY
+     ======================================== */
+
+  --color-navy-950: #0a1420;
+  --color-navy-900: #0e1c2e;
+  --color-navy-800: #142b45;
+  --color-navy-600: #24466b;
+
+  /* ========================================
+     COPPER
+     ======================================== */
+
+  --color-copper-600: #a85f26;
+  --color-copper-500: #c17a3e;
+  --color-copper-400: #d69660;
+
+  /* ========================================
+     STEEL
+     ======================================== */
+
+  --color-steel-200: #e4e7ea;
+  --color-steel-400: #aab3bd;
+  --color-steel-500: #8a96a3;
+  --color-steel-700: #4a5560;
+
+  /* ========================================
+     PAPER / INK
+     ======================================== */
+
+  --color-paper: #f4f5f6;
+  --color-ink: #0f1b2a;
+}
+
+/* ========================================
+   BASE
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* ========================================
+   SELECTION
+   ======================================== */
+
+::selection {
+  background: var(--color-copper-500);
+  color: white;
+}
+
+/* ========================================
+   FOCUS
+   ======================================== */
+
+:focus-visible {
+  outline: 2px solid var(--color-copper-500);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   ENGINEERING GRID - LIGHT
+   ======================================== */
+
+.engineering-grid {
+  background-image:
+    linear-gradient(
+      rgba(36, 70, 107, 0.07) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(36, 70, 107, 0.07) 1px,
+      transparent 1px
+    );
+
+  background-size: 40px 40px;
+}
+
+/* ========================================
+   ENGINEERING GRID - DARK
+   ======================================== */
+
+.engineering-grid-dark {
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    );
+
+  background-size: 40px 40px;
+}
+
+/* ========================================
+   FINE ENGINEERING GRID
+   ======================================== */
+
+.engineering-grid-fine {
+  background-image:
+    linear-gradient(
+      rgba(36, 70, 107, 0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(36, 70, 107, 0.045) 1px,
+      transparent 1px
+    );
+
+  background-size: 20px 20px;
+}
+
+/* ========================================
+   CROP MARKS
+   ======================================== */
+
+.crop-marks {
+  position: relative;
+}
+
+.crop-marks::before,
+.crop-marks::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.crop-marks::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--color-copper-500);
+  border-left: 2px solid var(--color-copper-500);
+}
+
+.crop-marks::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 2px solid var(--color-copper-500);
+  border-bottom: 2px solid var(--color-copper-500);
+}
+
+/* ========================================
+   TICK RULE
+   ======================================== */
+
+.tick-rule {
+  height: 6px;
+
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-steel-400) 0,
+    var(--color-steel-400) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+
+/* ========================================
+   COPPER LINE
+   ======================================== */
+
+.copper-line {
+  width: 48px;
+  height: 2px;
+  background: var(--color-copper-500);
+}
+
+/* ========================================
+   TECHNICAL CORNER
+   ======================================== */
+
+.technical-corner {
+  position: relative;
+}
+
+.technical-corner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-top: 1px solid var(--color-copper-500);
+  border-left: 1px solid var(--color-copper-500);
+  pointer-events: none;
+}
+
+.technical-corner::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  border-right: 1px solid var(--color-copper-500);
+  border-bottom: 1px solid var(--color-copper-500);
+  pointer-events: none;
+}
+
+/* ========================================
+   CONTAINER
+   ======================================== */
+
+.container-kenz {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 1024px) {
+  .container-kenz {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+/* ========================================
+   SECTION SPACING
+   ======================================== */
+
+.section-padding {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 128px;
+    padding-bottom: 128px;
+  }
+}
+
+/* ========================================
+   IMAGE
+   ======================================== */
+
+.kenz-image {
+  transition:
+    transform 700ms ease,
+    filter 700ms ease;
+}
+
+.kenz-image:hover {
+  transform: scale(1.03);
+}
+
+/* ========================================
+   IMAGE FRAME
+   ======================================== */
+
+.kenz-image-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.kenz-image-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(193, 122, 62, 0.08),
+      transparent 45%
+    );
+}
+
+/* ========================================
+   TECHNICAL LINE
+   ======================================== */
+
+.technical-line {
+  position: relative;
+}
+
+.technical-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+
+  background: var(--color-steel-200);
+
+  transform: translateY(-50%);
+}
+
+/* ========================================
+   LINK
+   ======================================== */
+
+.kenz-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.kenz-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+
+  width: 100%;
+  height: 1px;
+
+  background: var(--color-copper-500);
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform 300ms ease;
+}
+
+.kenz-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ========================================
+   FADE UP
+   ======================================== */
+
+@keyframes kenz-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kenz-fade-up {
+  animation: kenz-fade-up 700ms ease both;
+}
+
+/* ========================================
+   FADE IN
+   ======================================== */
+
+@keyframes kenz-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.kenz-fade-in {
+  animation: kenz-fade-in 700ms ease both;
+}
+
+/* ========================================
+   LINE EXPAND
+   ======================================== */
+
+@keyframes kenz-line-expand {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.kenz-line-expand {
+  animation: kenz-line-expand 700ms ease both;
+}
+
+/* ========================================
+   GRID MOVEMENT
+   ======================================== */
+
+@keyframes kenz-grid-move {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 40px 40px;
+  }
+}
+
+.kenz-grid-move {
+  animation: kenz-grid-move 18s linear infinite;
+}
+
+/* ========================================
+   COPPER PULSE
+   ======================================== */
+
+@keyframes kenz-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.kenz-pulse {
+  animation: kenz-pulse 2.5s ease-in-out infinite;
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 640px) {
+  .section-padding {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+}
+@keyframes reveal-line {
+  to { transform: scaleX(1); }
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-x {
+  animation: gradient-x 4s ease-in-out infinite;
+}
