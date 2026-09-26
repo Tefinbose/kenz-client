@@ -220,10 +220,10 @@ export default function AccoladesPreview() {
 
             <div className="flex shrink-0 items-center">
               <Link
-                href="/about"
+                href="/accolades"
                 className="group relative inline-flex items-center gap-3 overflow-hidden rounded-xl border border-navy-950 bg-navy-950 px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-md transition-all duration-300 hover:border-copper-500 hover:bg-copper-500 hover:shadow-lg hover:shadow-copper-500/20"
               >
-                <span>Learn About Kenz</span>
+                <span>Explore All Accolades</span>
                 <ArrowUpRight
                   size={18}
                   className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"

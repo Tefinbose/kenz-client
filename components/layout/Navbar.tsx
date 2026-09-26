@@ -69,7 +69,9 @@ const mainLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Projects", href: "/projects" },
+  { name: "Accolades", href: "/accolades" },
   { name: "Careers", href: "/careers" },
+  { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -518,7 +520,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               className={`${styles.desktopCta} ${styles.enter}`}
-              style={stagger(7)}
+              style={stagger(9)}
             >
               <span>Start a project</span>
               <ArrowUpRight size={16} />
