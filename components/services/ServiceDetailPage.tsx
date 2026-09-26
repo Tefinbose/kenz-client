@@ -2,19 +2,20 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUpRight,
-  CheckCircle2,
-  FileCheck2,
-  Layers3,
+  Check,
+  ChevronRight,
+  FileText,
+  FolderOpen,
+  Grid3x3,
+  LayoutGrid,
+  MoveRight,
+  Package,
   LucideIcon,
-  MessageSquare,
-  Ruler,
-  Sparkles,
-  ShieldCheck,
-  Workflow,
-  Clock,
-  Send,
-  Boxes,
+  CircleDot,
+  Milestone,
+  Building2,
+  ClipboardList,
+  CornerDownRight,
 } from "lucide-react";
 
 export type ServiceDetail = {
@@ -54,253 +55,198 @@ export default function ServiceDetailPage({
   const Icon = service.icon;
 
   return (
-    <main className="min-h-screen bg-[#fafbfc] text-ink overflow-hidden">
-      {/* =====================================================
-          HERO
-      ===================================================== */}
+    <main className="min-h-screen bg-[#f7f8fa] text-ink overflow-hidden">
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-navy-950 text-white pt-40 pb-28 lg:pb-36">
-        {/* Dynamic Blueprint Background Grid */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          className="pointer-events-none absolute inset-0 opacity-[0.028]"
           style={{
             backgroundImage: `
               linear-gradient(#ffffff 1px, transparent 1px),
               linear-gradient(90deg, #ffffff 1px, transparent 1px)
             `,
-            backgroundSize: "60px 60px",
+            backgroundSize: "52px 52px",
           }}
         />
 
-        {/* Ambient Radial Illumination */}
-        <div className="pointer-events-none absolute -left-48 top-1/4 h-[500px] w-[500px] rounded-full bg-copper-500/12 blur-[140px]" />
-        <div className="pointer-events-none absolute -right-48 bottom-1/4 h-[500px] w-[500px] rounded-full bg-copper-600/12 blur-[150px]" />
+        <div className="pointer-events-none absolute -left-56 top-1/3 h-[600px] w-[600px] rounded-full bg-copper-500/10 blur-[160px]" />
+        <div className="pointer-events-none absolute right-0 top-0 h-[400px] w-[400px] rounded-full bg-copper-600/8 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          {/* Back Link Breadcrumb */}
-          <div className="mb-8">
+          {/* Breadcrumb */}
+          <div className="mb-10">
             <Link
               href="/services"
-              className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-steel-400 backdrop-blur-md transition-all hover:border-copper-400 hover:text-white"
+              className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-steel-400 transition-colors hover:text-white"
             >
               <ArrowLeft
-                size={14}
+                size={13}
                 className="transition-transform duration-300 group-hover:-translate-x-1"
               />
-              <span>Back to All Services</span>
+              <span>All Services</span>
+              <span className="mx-1 text-steel-600">/</span>
+              <span className="text-copper-400">{service.eyebrow}</span>
             </Link>
           </div>
 
-          <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-            {/* Left Header Content */}
-            <div className="transition-all duration-500">
-              <div className="mb-6 flex items-center gap-3">
-                <span className="h-px w-10 bg-copper-500" />
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.25em] text-copper-400">
-                  {service.number} // {service.eyebrow}
+          <div className="grid gap-16 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+            {/* Left – headline block */}
+            <div>
+              <div className="mb-7 inline-flex items-center gap-3">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-copper-500/40 bg-copper-500/15 font-mono text-[11px] font-bold text-copper-400">
+                  {service.number}
+                </span>
+                <span className="h-px w-8 bg-copper-500/50" />
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-copper-400">
+                  {service.eyebrow}
                 </span>
               </div>
 
-              <h1 className="font-display text-5xl uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+              <h1 className="font-display text-5xl uppercase leading-[0.9] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
                 {service.title}
                 <span className="block bg-gradient-to-r from-copper-400 via-copper-300 to-copper-500 bg-clip-text text-transparent">
                   {service.accentTitle}
                 </span>
               </h1>
 
-              <div className="mt-8 border-l-2 border-copper-500/60 pl-5">
-                <p className="max-w-2xl text-base leading-relaxed text-steel-300 md:text-lg">
-                  {service.description}
-                </p>
-              </div>
+              <p className="mt-8 max-w-xl text-base leading-relaxed text-steel-300 md:text-lg">
+                {service.description}
+              </p>
 
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="mt-10 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="group inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-copper-600 via-copper-500 to-copper-600 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-copper-500/25 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-copper-500/35"
+                  className="group inline-flex items-center gap-2.5 rounded-xl bg-copper-500 px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-lg shadow-copper-500/25 transition-all duration-300 hover:bg-copper-400 hover:shadow-xl hover:shadow-copper-500/30 hover:-translate-y-0.5"
                 >
-                  <span>Discuss Your Project</span>
+                  <span>Discuss This Service</span>
                   <ArrowRight
-                    size={16}
+                    size={14}
                     className="transition-transform duration-300 group-hover:translate-x-1"
                   />
                 </Link>
 
                 <Link
                   href="/projects"
-                  className="inline-flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-steel-200 backdrop-blur-sm transition-all duration-300 hover:border-copper-400 hover:bg-white/10 hover:text-white"
+                  className="inline-flex items-center gap-2.5 rounded-xl border border-white/15 px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-steel-300 transition-all duration-300 hover:border-white/30 hover:text-white"
                 >
                   View Projects
                 </Link>
               </div>
             </div>
 
-            {/* Right Telemetry Badge Cockpit */}
-            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-8 shadow-[0_25px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl">
-              {/* CAD Crosshairs */}
-              <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l-2 border-t-2 border-copper-400/50" />
-              <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r-2 border-t-2 border-copper-400/50" />
-              <div className="pointer-events-none absolute bottom-3 left-3 h-3 w-3 border-b-2 border-l-2 border-copper-400/50" />
-              <div className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b-2 border-r-2 border-copper-400/50" />
-
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-copper-500/30 bg-copper-500/15 text-copper-400 shadow-inner">
-                  <Icon size={28} strokeWidth={1.8} />
+            {/* Right – compact stat panel */}
+            <div className="flex flex-col gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md">
+              <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-copper-500/25 bg-copper-500/10 text-copper-400">
+                    <Icon size={22} strokeWidth={1.7} />
+                  </div>
+                  <div>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-steel-500">
+                      Discipline
+                    </p>
+                    <p className="text-sm font-bold text-white">
+                      {service.eyebrow}
+                    </p>
+                  </div>
                 </div>
+                <span className="font-mono text-4xl font-bold text-white/15">
+                  {service.number}
+                </span>
+              </div>
 
-                <div className="text-right">
+              {[
+                {
+                  label: "Capabilities",
+                  value: `${service.capabilities.length} Areas`,
+                  icon: Grid3x3,
+                },
+                {
+                  label: "Deliverables",
+                  value: `${service.deliverables.length} Outputs`,
+                  icon: Package,
+                },
+                {
+                  label: "Applications",
+                  value: `${service.applications.length} Use Cases`,
+                  icon: Building2,
+                },
+                {
+                  label: "Process Steps",
+                  value: `${service.process.length} Phases`,
+                  icon: Milestone,
+                },
+              ].map(({ label, value, icon: StatIcon }) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between px-6 py-3.5 transition-colors hover:bg-white/[0.03]"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <StatIcon size={13} className="text-steel-500" />
+                    <span className="text-xs text-steel-400">{label}</span>
+                  </div>
                   <span className="font-mono text-xs font-semibold text-copper-400">
-                    DISCIPLINE CODE
+                    {value}
                   </span>
-                  <p className="font-display text-4xl text-white">
-                    {service.number}
-                  </p>
                 </div>
-              </div>
+              ))}
 
-              <div className="mt-6">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-400">
-                  STANDARD COMPLIANCE
-                </p>
-                <h3 className="mt-1 text-lg font-bold text-white">
-                  AISC &amp; NISD Detailing Protocol
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-steel-400">
-                  Engineered with intelligent parametric 3D models ready for CNC
-                  extraction and multi-discipline clash coordination.
-                </p>
-              </div>
-
-              <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4 text-xs text-steel-300">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  <span>Available for Active RFQs</span>
-                </div>
-                <span className="font-mono text-[10px] text-white/40">
-                  LOD 350-400
+              <div className="flex items-center gap-2 border-t border-white/10 px-6 py-3.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
+                <span className="text-[11px] text-steel-400">
+                  Available for project inquiries
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom accent gradient beam */}
         <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-copper-500/60 to-transparent" />
       </section>
 
-      {/* =====================================================
-          OVERVIEW PHILOSOPHY
-      ===================================================== */}
-      <section className="relative z-20 -mt-8 px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="rounded-3xl border border-steel-200/90 bg-white p-8 shadow-[0_15px_40px_rgba(10,20,32,0.06)] md:p-12">
-            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-              <div>
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
-                  SERVICE OVERVIEW
-                </span>
-                <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
-                  Detail Built
-                  <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
-                    Around Requirements.
-                  </span>
-                </h2>
-              </div>
-
-              <div>
-                <p className="text-base leading-relaxed text-steel-700 md:text-lg">
-                  Kenz Engineering approaches every service with a focus on
-                  accuracy, coordination, fabrication requirements, and clear
-                  project communication.
-                </p>
-
-                <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                  <div className="flex items-center gap-3 rounded-xl border border-steel-200 bg-steel-50/50 p-4">
-                    <Ruler size={18} className="text-copper-600 shrink-0" />
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-navy-950">
-                        Precision
-                      </p>
-                      <p className="text-[10px] text-steel-500">Fabrication-First</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 rounded-xl border border-steel-200 bg-steel-50/50 p-4">
-                    <Layers3 size={18} className="text-copper-600 shrink-0" />
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-navy-950">
-                        Coordination
-                      </p>
-                      <p className="text-[10px] text-steel-500">Zero-Clash Model</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 rounded-xl border border-steel-200 bg-steel-50/50 p-4">
-                    <FileCheck2 size={18} className="text-copper-600 shrink-0" />
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-navy-950">
-                        Documentation
-                      </p>
-                      <p className="text-[10px] text-steel-500">Clear Drawing Sets</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================
-          TECHNICAL CAPABILITIES WORKBENCH
-      ===================================================== */}
-      <section className="py-24 md:py-32">
+      {/* ── CAPABILITIES ──────────────────────────────────────────────── */}
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-copper-200 bg-copper-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-copper-700">
-              <Sparkles size={13} className="text-copper-600" />
-              <span>What We Provide</span>
+            <div className="mb-2 flex items-center gap-2">
+              <LayoutGrid size={13} className="text-copper-600" />
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
+                What We Provide
+              </span>
             </div>
-
-            <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] text-navy-950 sm:text-5xl md:text-6xl">
-              Technical
-              <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
+            <h2 className="font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
+              Service{" "}
+              <span className="bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
                 Capabilities
               </span>
             </h2>
-
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-steel-700">
-              Service capabilities can be adapted to the project scope,
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-steel-600">
+              These capabilities are adapted to each project&apos;s scope,
               detailing standards, schedule, and coordination requirements.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {service.capabilities.map((item, index) => (
               <div
                 key={item}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-steel-200/90 bg-white p-7 shadow-sm transition-all duration-300 hover:border-copper-400 hover:shadow-lg hover:-translate-y-1"
+                className="group flex items-start gap-4 rounded-xl border border-steel-200 bg-white p-5 shadow-sm transition-all duration-250 hover:border-copper-400 hover:shadow-md"
               >
-                {/* Laser top accent */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-copper-500 to-copper-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-copper-600">
+                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-copper-500/25 bg-copper-50 text-copper-500 transition-colors group-hover:bg-copper-500 group-hover:text-white group-hover:border-copper-500">
+                  <Check size={12} strokeWidth={2.5} />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-sm font-semibold leading-snug text-navy-950 group-hover:text-copper-600 transition-colors">
+                      {item}
+                    </p>
+                    <span className="shrink-0 font-mono text-[10px] text-steel-300 group-hover:text-copper-400 transition-colors">
                       {(index + 1).toString().padStart(2, "0")}
                     </span>
-                    <CheckCircle2
-                      size={18}
-                      className="text-steel-300 transition-colors group-hover:text-copper-500"
-                    />
                   </div>
-
-                  <h3 className="mt-6 text-base font-bold uppercase tracking-wide text-navy-950 group-hover:text-copper-600 transition-colors">
-                    {item}
-                  </h3>
-                </div>
-
-                <div className="mt-6 border-t border-steel-100 pt-3 text-[11px] font-mono text-steel-400">
-                  STANDARD EXECUTION
                 </div>
               </div>
             ))}
@@ -308,195 +254,205 @@ export default function ServiceDetailPage({
         </div>
       </section>
 
-      {/* =====================================================
-          DELIVERABLES + APPLICATIONS (DUAL HIGH-CONTRAST CONSOLES)
-      ===================================================== */}
-      <section className="border-t border-steel-200/80 bg-white py-24 md:py-32">
+      {/* ── DELIVERABLES & APPLICATIONS ───────────────────────────────── */}
+      <section className="border-t border-steel-200/60 bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-10">
+            <div className="mb-2 flex items-center gap-2">
+              <FolderOpen size={13} className="text-copper-600" />
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
+                Scope Detail
+              </span>
+            </div>
+            <h2 className="font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
+              Outputs &amp;{" "}
+              <span className="bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
+                Applications
+              </span>
+            </h2>
+          </div>
+
           <div className="grid gap-8 lg:grid-cols-2">
-            {/* Deliverables Console (Light Architectural) */}
-            <div className="relative overflow-hidden rounded-3xl border border-steel-200/90 bg-[#fafbfc] p-8 shadow-sm md:p-12 transition-all hover:shadow-md">
-              <div className="flex h-13 w-13 items-center justify-center rounded-2xl bg-navy-950 text-copper-400 shadow-md">
-                <FileCheck2 size={24} />
+            <div>
+              <div className="mb-5 flex items-center gap-2.5">
+                <FileText size={14} className="text-copper-600" />
+                <h3 className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-navy-950">
+                  Project Deliverables
+                </h3>
               </div>
-
-              <p className="mt-7 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
-                OUTPUT SPECIFICATION
-              </p>
-
-              <h2 className="mt-2 font-display text-3xl uppercase text-navy-950 sm:text-4xl">
-                Project Deliverables &amp; Documentation
-              </h2>
-
-              <ul className="mt-8 space-y-3.5">
-                {service.deliverables.map((item) => (
-                  <li
+              <div className="space-y-2.5">
+                {service.deliverables.map((item, i) => (
+                  <div
                     key={item}
-                    className="flex items-start gap-3 rounded-xl border border-steel-200/80 bg-white p-3.5 text-xs font-medium text-steel-800 shadow-sm transition-all hover:border-copper-400"
+                    className="group flex items-center gap-3.5 rounded-xl border border-steel-200 bg-[#fafbfc] p-4 transition-all hover:border-copper-400 hover:bg-white hover:shadow-sm"
                   >
-                    <CheckCircle2
-                      size={16}
-                      className="mt-0.5 shrink-0 text-copper-500"
-                    />
-                    <span>{item}</span>
-                  </li>
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-steel-200 bg-white text-copper-500 transition-all group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
+                      <ClipboardList size={13} />
+                    </div>
+                    <p className="text-sm font-medium leading-snug text-navy-950">
+                      {item}
+                    </p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
-            {/* Applications Console (Dark Navy Cockpit) */}
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-navy-950 p-8 text-white shadow-2xl md:p-12 transition-all">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.04]"
-                style={{
-                  backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
-                  backgroundSize: "36px 36px",
-                }}
-              />
-
-              <div className="relative z-10 flex h-13 w-13 items-center justify-center rounded-2xl bg-copper-500 text-white shadow-lg">
-                <Layers3 size={24} />
+            <div>
+              <div className="mb-5 flex items-center gap-2.5">
+                <Building2 size={14} className="text-copper-600" />
+                <h3 className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-navy-950">
+                  Where It Applies
+                </h3>
               </div>
-
-              <p className="relative z-10 mt-7 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-400">
-                PRACTICAL DEPLOYMENT
-              </p>
-
-              <h2 className="relative z-10 mt-2 font-display text-3xl uppercase text-white sm:text-4xl">
-                Where It Supports Projects
-              </h2>
-
-              <ul className="relative z-10 mt-8 space-y-3.5">
-                {service.applications.map((item) => (
-                  <li
+              <div className="space-y-2.5">
+                {service.applications.map((item, i) => (
+                  <div
                     key={item}
-                    className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-3.5 text-xs text-steel-300 backdrop-blur-sm transition-all hover:border-copper-400 hover:text-white"
+                    className="group flex items-center gap-3.5 rounded-xl border border-steel-200 bg-[#fafbfc] p-4 transition-all hover:border-copper-400 hover:bg-white hover:shadow-sm"
                   >
-                    <ArrowRight
-                      size={15}
-                      className="mt-0.5 shrink-0 text-copper-400"
-                    />
-                    <span>{item}</span>
-                  </li>
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-steel-200 bg-white text-copper-500 transition-all group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
+                      <CornerDownRight size={13} />
+                    </div>
+                    <p className="text-sm font-medium leading-snug text-navy-950">
+                      {item}
+                    </p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* =====================================================
-          PROCESS (STRUCTURED FOR DELIVERY)
-      ===================================================== */}
-      <section className="border-t border-steel-200/80 bg-[#fafbfc] py-24 md:py-32">
+      {/* ── PROCESS ───────────────────────────────────────────────────── */}
+      <section className="border-t border-steel-200/60 bg-[#f7f8fa] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+          <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
             <div className="lg:sticky lg:top-32">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
-                EXECUTION FLOW
-              </span>
-              <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
-                Structured
+              <div className="mb-2 flex items-center gap-2">
+                <CircleDot size={13} className="text-copper-600" />
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
+                  How We Work
+                </span>
+              </div>
+              <h2 className="font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
+                Project{" "}
                 <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
-                  For Delivery.
+                  Process
                 </span>
               </h2>
 
-              <p className="mt-6 text-base leading-relaxed text-steel-700">
-                We structure our workflow around the information and
-                coordination required to move from project inputs to usable
-                technical deliverables.
+              <p className="mt-5 text-sm leading-relaxed text-steel-600">
+                Our process is structured around understanding project
+                information first, then coordinating, modeling, and delivering
+                technical documentation that meets fabrication requirements.
               </p>
+
+              <div className="mt-8 rounded-xl border border-copper-200 bg-copper-50/60 p-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-copper-700">
+                  Communication Throughout
+                </p>
+                <p className="mt-1.5 text-xs leading-relaxed text-copper-800/70">
+                  We maintain consistent communication at each stage to ensure
+                  the project scope and schedule are being met.
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              {service.process.map((item) => (
-                <div
-                  key={item.number}
-                  className="group rounded-2xl border border-steel-200/90 bg-white p-6 shadow-sm transition-all duration-300 hover:border-copper-400 hover:bg-copper-50/20"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy-950 font-mono text-xs font-bold text-white transition-colors group-hover:bg-copper-500">
-                      {item.number}
-                    </span>
+            <div className="relative">
+              <div className="absolute left-[21px] top-12 bottom-12 w-px bg-gradient-to-b from-copper-400/50 via-copper-300/30 to-transparent" />
 
-                    <div>
-                      <h3 className="font-display text-2xl uppercase tracking-wide text-navy-950 group-hover:text-copper-600 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 text-xs leading-relaxed text-steel-700">
+              <div className="space-y-3">
+                {service.process.map((item, i) => (
+                  <div
+                    key={item.number}
+                    className="group relative flex items-start gap-5 rounded-xl border border-steel-200 bg-white p-5 shadow-sm transition-all duration-300 hover:border-copper-400 hover:shadow-md"
+                  >
+                    <div className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-steel-200 bg-white font-mono text-xs font-bold text-steel-500 shadow-sm transition-all group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
+                      {item.number}
+                    </div>
+
+                    <div className="flex-1 pt-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-display text-xl uppercase tracking-wide text-navy-950 transition-colors group-hover:text-copper-600">
+                          {item.title}
+                        </h3>
+                        <ChevronRight
+                          size={14}
+                          className="text-steel-300 transition-all group-hover:translate-x-1 group-hover:text-copper-500"
+                        />
+                      </div>
+                      <p className="mt-1.5 text-xs leading-relaxed text-steel-600">
                         {item.text}
                       </p>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================
-          BOTTOM CINEMATIC CTA
-      ===================================================== */}
-      <section className="relative overflow-hidden bg-navy-950 px-6 py-20 text-white md:py-24">
-        <div className="relative mx-auto max-w-7xl">
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-copper-600 via-copper-500 to-[#8c4614] p-8 shadow-2xl md:p-14 lg:p-16">
-            <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/80">
-                  Start A Conversation
-                </p>
-                <h2 className="mt-3 font-display text-4xl uppercase leading-[0.92] text-white sm:text-5xl lg:text-6xl">
-                  Have A Project
-                  <span className="block text-navy-950">
-                    To Discuss?
-                  </span>
-                </h2>
-                <p className="mt-6 max-w-2xl text-sm leading-relaxed text-white/90">
-                  Tell us about your project requirements, schedule, scope, and
-                  technical needs.
-                </p>
-              </div>
-
-              <div className="shrink-0">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-4 rounded-xl bg-white px-9 py-4 text-xs font-bold uppercase tracking-[0.2em] text-navy-950 shadow-md transition-all duration-300 hover:bg-navy-950 hover:text-white hover:scale-105"
-                >
-                  <span>Submit Project Inquiry</span>
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </Link>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* =====================================================
-          SERVICE NAVIGATION FOOTER
-      ===================================================== */}
-      <section className="border-t border-steel-200 bg-white py-8">
+      {/* ── CTA ───────────────────────────────────────────────────────── */}
+      <section className="border-t border-steel-200/60 bg-navy-950 py-20 text-white md:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.3em] text-copper-400">
+                Kenz Engineering LLC
+              </p>
+              <h2 className="font-display text-4xl uppercase leading-[0.92] sm:text-5xl">
+                Ready to discuss
+                <span className="block text-copper-400">your project?</span>
+              </h2>
+              <p className="mt-5 max-w-lg text-sm leading-relaxed text-steel-400">
+                Tell us about your project requirements, schedule, scope, and
+                technical needs — and we&apos;ll take it from there.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-3 rounded-xl bg-copper-500 px-7 py-4 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-lg shadow-copper-500/20 transition-all duration-300 hover:bg-copper-400 hover:-translate-y-0.5"
+              >
+                <span>Start a Project</span>
+                <MoveRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
+
+              <Link
+                href="/services"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-7 py-4 text-xs font-bold uppercase tracking-[0.18em] text-steel-300 transition-all duration-300 hover:border-white/30 hover:text-white"
+              >
+                All Services
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICE NAVIGATION ────────────────────────────────────────── */}
+      <nav className="border-t border-steel-200 bg-white py-6">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-6">
             {previous ? (
               <Link
                 href={previous.href}
-                className="group flex items-center gap-3.5"
+                className="group flex items-center gap-3"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-steel-200 bg-steel-50 transition-colors group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-steel-200 bg-steel-50 transition-all group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
                   <ArrowLeft
-                    size={16}
-                    className="transition-transform group-hover:-translate-x-1"
+                    size={15}
+                    className="transition-transform group-hover:-translate-x-0.5"
                   />
                 </div>
-
                 <div>
-                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-steel-400">
-                    Previous Service
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-steel-400">
+                    Previous
                   </p>
                   <p className="text-xs font-bold uppercase text-navy-950 transition-colors group-hover:text-copper-600">
                     {previous.title}
@@ -509,30 +465,29 @@ export default function ServiceDetailPage({
 
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 rounded-xl border border-steel-200 bg-steel-50 px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-copper-600 transition-colors hover:border-copper-500 hover:bg-copper-50 hover:text-copper-700"
+              className="hidden items-center gap-2 rounded-lg border border-steel-200 bg-steel-50 px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-steel-600 transition-all hover:border-copper-500 hover:bg-copper-50 hover:text-copper-700 sm:inline-flex"
             >
-              <Boxes size={14} />
-              <span>All 6 Services Hub</span>
+              <Grid3x3 size={13} />
+              <span>All Services</span>
             </Link>
 
             {next ? (
               <Link
                 href={next.href}
-                className="group flex items-center justify-end gap-3.5 text-right"
+                className="group flex items-center justify-end gap-3 text-right"
               >
                 <div>
-                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-steel-400">
-                    Next Service
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-steel-400">
+                    Next
                   </p>
                   <p className="text-xs font-bold uppercase text-navy-950 transition-colors group-hover:text-copper-600">
                     {next.title}
                   </p>
                 </div>
-
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-steel-200 bg-steel-50 transition-colors group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-steel-200 bg-steel-50 transition-all group-hover:border-copper-500 group-hover:bg-copper-500 group-hover:text-white">
                   <ArrowRight
-                    size={16}
-                    className="transition-transform group-hover:translate-x-1"
+                    size={15}
+                    className="transition-transform group-hover:translate-x-0.5"
                   />
                 </div>
               </Link>
@@ -541,7 +496,7 @@ export default function ServiceDetailPage({
             )}
           </div>
         </div>
-      </section>
+      </nav>
     </main>
   );
 }
