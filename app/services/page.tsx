@@ -12,12 +12,10 @@ import {
   ScanLine,
   Calculator,
   CheckCircle2,
-  Sparkles,
+  ChevronDown,
   ShieldCheck,
   Workflow,
   Crosshair,
-  Cpu,
-  Layers,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -207,6 +205,7 @@ const pillars = [
 
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
+  const [openService, setOpenService] = useState<string>("01");
 
   const filteredServices =
     activeCategory === "all"
@@ -214,10 +213,9 @@ export default function ServicesPage() {
       : services.filter((s) => s.category === activeCategory);
 
   return (
-    <main className="min-h-screen bg-[#fafbfc] text-ink overflow-hidden">
+    <main className="min-h-screen bg-[#fafbfc] text-ink">
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-navy-950 text-white pt-44 pb-32 lg:pb-40">
-        {/* Dynamic Blueprint Background Grid */}
+      <section className="relative overflow-hidden bg-navy-950 pt-40 pb-24 text-white lg:pt-48">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.035]"
           style={{
@@ -228,137 +226,115 @@ export default function ServicesPage() {
             backgroundSize: "60px 60px",
           }}
         />
-
-        {/* Ambient Radial Illumination */}
         <div className="pointer-events-none absolute -left-48 top-1/4 h-[550px] w-[550px] rounded-full bg-copper-500/12 blur-[140px]" />
         <div className="pointer-events-none absolute -right-48 bottom-1/4 h-[550px] w-[550px] rounded-full bg-copper-600/12 blur-[150px]" />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-5xl">
-            {/* Pill Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
+          <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:items-end">
+            <div>
+              <span className="font-mono text-xs uppercase tracking-[0.25em] text-copper-400">
+                Capability Index — 06 Disciplines
               </span>
-              Our Capabilities // 06 Disciplines
-            </motion.div>
 
-            {/* Monumental Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-display text-5xl uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
-            >
-              Detailed Solutions
-              <span className="block bg-gradient-to-r from-copper-400 via-copper-300 to-copper-500 bg-clip-text text-transparent">
-                For The Steel Construction Lifecycle.
-              </span>
-            </motion.h1>
+              <h1 className="mt-6 font-display text-5xl uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl">
+                Detailed Solutions
+                <span className="block bg-gradient-to-r from-copper-400 via-copper-300 to-copper-500 bg-clip-text text-transparent">
+                  For The Steel Construction Lifecycle.
+                </span>
+              </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-8 max-w-3xl text-base leading-relaxed text-steel-300 md:text-lg"
-            >
-              From structural steel modeling and shop drawings to BIM
-              coordination, miscellaneous steel, joist and deck detailing,
-              connection support, and estimation, Kenz Engineering provides
-              technical capabilities built around project requirements.
-            </motion.p>
+              <p className="mt-8 max-w-2xl text-base leading-relaxed text-steel-300 md:text-lg">
+                From structural steel modeling and shop drawings to BIM
+                coordination, miscellaneous steel, joist and deck detailing,
+                connection support, and estimation — Kenz Engineering
+                provides technical capabilities built around project
+                requirements.
+              </p>
 
-            {/* CTA Buttons & Specs Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-10 flex flex-wrap items-center gap-4"
-            >
-              <Link
-                href="/contact"
-                className="group inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-copper-600 via-copper-500 to-copper-600 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-copper-500/25 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-copper-500/35"
-              >
-                <span>Start A Project</span>
-                <ArrowRight
-                  size={16}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                />
-              </Link>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center gap-3 rounded-xl bg-copper-500 px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-lg shadow-copper-500/25 transition-all duration-300 hover:bg-copper-400"
+                >
+                  Start A Project
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-steel-200 transition-all duration-300 hover:border-copper-400 hover:text-white"
+                >
+                  View Projects
+                </Link>
+              </div>
+            </div>
 
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-steel-200 backdrop-blur-sm transition-all duration-300 hover:border-copper-400 hover:bg-white/10 hover:text-white"
-              >
-                View Projects
-              </Link>
-            </motion.div>
+            {/* Index rail — doubles as jump-nav, sets up the section below */}
+            <div className="hidden border-t border-white/[0.08] pt-6 lg:block">
+              <ul className="space-y-2">
+                {services.map((s) => (
+                  <li key={s.number}>
+                    <a
+                      href={`#${s.href.split("/").pop()}`}
+                      onClick={() => setOpenService(s.number)}
+                      className="group flex items-center justify-between border-b border-white/[0.06] py-2 text-sm text-steel-400 transition-colors hover:text-copper-300"
+                    >
+                      <span className="flex items-center gap-3">
+                        <span className="font-mono text-xs text-steel-600 group-hover:text-copper-400">
+                          {s.number}
+                        </span>
+                        {s.shortTitle}
+                      </span>
+                      <ArrowUpRight
+                        size={13}
+                        className="opacity-0 transition-opacity group-hover:opacity-100"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Bottom accent gradient beam */}
         <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-copper-500/60 to-transparent" />
       </section>
 
-      {/* ── INTRO PHILOSOPHY STRIP ───────────────────────────── */}
-      <section className="relative z-20 -mt-8 px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="rounded-3xl border border-steel-200/90 bg-white p-8 shadow-[0_15px_40px_rgba(10,20,32,0.06)] md:p-12"
-          >
-            <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-              <div>
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
-                  TECHNICAL CAPABILITIES
-                </span>
-                <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
-                  One Team.
-                  <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
-                    Multiple Capabilities.
-                  </span>
-                </h2>
+      {/* ── PILLARS — quiet inline band, not repeated cards ───── */}
+      <section className="border-b border-steel-200/80 bg-white py-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid divide-y divide-steel-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {pillars.map(({ icon: Icon, label, title, desc }) => (
+              <div key={title} className="flex items-start gap-4 py-4 sm:px-8 sm:py-0 first:sm:pl-0">
+                <Icon size={20} className="mt-0.5 shrink-0 text-copper-600" />
+                <div>
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-copper-600">
+                    {label}
+                  </p>
+                  <h3 className="mt-1 text-sm font-semibold text-navy-950">
+                    {title}
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-steel-600">
+                    {desc}
+                  </p>
+                </div>
               </div>
-
-              <div className="space-y-4 text-sm leading-relaxed text-steel-700 md:text-base">
-                <p>
-                  Kenz Engineering LLC provides a range of structural steel
-                  detailing and engineering support services designed to work
-                  together across the project lifecycle.
-                </p>
-                <p>
-                  Our approach combines 3D modeling, coordinated detailing,
-                  fabrication-oriented documentation, BIM workflows, and
-                  quantity information to support steel fabricators, contractors,
-                  and construction professionals.
-                </p>
-              </div>
-            </div>
-          </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── SERVICES GRID WORKBENCH ──────────────────────────── */}
-      <section className="py-24 md:py-32">
+      {/* ── SERVICES — interactive spec-sheet index/accordion ──── */}
+      <section className="py-24 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          {/* Section Header & Interactive Filter Bar */}
           <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-copper-200 bg-copper-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-copper-700">
-                <Sparkles size={13} className="text-copper-600" />
-                <span>What We Do</span>
-              </div>
-
-              <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] text-navy-950 sm:text-5xl md:text-6xl">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-copper-600">
+                What We Do
+              </span>
+              <h2 className="mt-3 font-display text-4xl uppercase leading-[0.95] text-navy-950 sm:text-5xl">
                 Engineering Support
                 <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
                   Built Around Detail.
@@ -366,7 +342,6 @@ export default function ServicesPage() {
               </h2>
             </div>
 
-            {/* Category Filter Pills */}
             <div className="flex flex-wrap gap-2 rounded-2xl border border-steel-200 bg-white p-1.5 shadow-sm">
               {categories.map((cat) => (
                 <button
@@ -385,188 +360,163 @@ export default function ServicesPage() {
             </div>
           </div>
 
-          {/* Cards Grid */}
-          <motion.div
-            layout
-            className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            <AnimatePresence>
-              {filteredServices.map((service, idx) => {
+          {/* Index list */}
+          <div className="mt-12 divide-y divide-steel-200 border-y border-steel-200">
+            <AnimatePresence initial={false}>
+              {filteredServices.map((service) => {
                 const Icon = service.icon;
+                const isOpen = openService === service.number;
                 return (
-                  <motion.article
+                  <div
                     key={service.number}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4, delay: idx * 0.05 }}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-steel-200/90 bg-white p-8 shadow-[0_10px_30px_-5px_rgba(10,20,32,0.05)] transition-all duration-300 hover:border-copper-400 hover:shadow-[0_20px_45px_-8px_rgba(193,122,62,0.18)] hover:-translate-y-1.5"
+                    id={service.href.split("/").pop()}
+                    className="scroll-mt-32"
                   >
-                    {/* Top laser accent line */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-copper-500 to-copper-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div>
-                      {/* Card Top: Number + Icon + Spec Tag */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-copper-500/20 bg-copper-50 text-copper-600 shadow-sm transition-all duration-300 group-hover:bg-copper-500 group-hover:text-white group-hover:scale-105">
-                          <Icon size={22} strokeWidth={1.7} />
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-semibold text-steel-400 group-hover:text-copper-600 transition-colors">
-                            {service.code}
-                          </span>
-                          <span className="rounded-md border border-steel-200 bg-steel-50 px-2 py-0.5 font-mono text-[10px] font-semibold text-steel-600">
-                            {service.spec}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Title & Short Title */}
-                      <p className="mt-6 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-copper-600">
-                        {service.shortTitle}
-                      </p>
-                      <h3 className="mt-1 font-display text-2xl uppercase tracking-wide text-navy-950 group-hover:text-copper-600 transition-colors">
-                        {service.title}
-                      </h3>
-
-                      <p className="mt-3 text-xs leading-relaxed text-steel-600">
-                        {service.description}
-                      </p>
-
-                      <div className="my-6 h-px bg-steel-100" />
-
-                      {/* Capabilities Checklist */}
-                      <ul className="space-y-2.5">
-                        {service.capabilities.map((cap) => (
-                          <li
-                            key={cap}
-                            className="flex items-start gap-2.5 text-xs text-steel-700"
-                          >
-                            <CheckCircle2
-                              size={14}
-                              className="mt-0.5 shrink-0 text-copper-500"
-                            />
-                            <span>{cap}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Bottom Action Link */}
-                    <div className="mt-8 border-t border-steel-100 pt-5">
-                      <Link
-                        href={service.href}
-                        className="group/link flex items-center justify-between text-xs font-bold uppercase tracking-[0.18em] text-navy-950 transition-colors hover:text-copper-600"
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOpenService(isOpen ? "" : service.number)
+                      }
+                      className="flex w-full items-center gap-6 py-6 text-left transition-colors hover:bg-steel-50/60"
+                    >
+                      <span className="font-mono text-sm text-steel-400">
+                        {service.number}
+                      </span>
+                      <span
+                        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors ${
+                          isOpen
+                            ? "border-copper-500 bg-copper-500 text-white"
+                            : "border-copper-500/20 bg-copper-50 text-copper-600"
+                        }`}
                       >
-                        <span>Explore Service Details</span>
-                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-steel-50 text-steel-600 transition-all duration-300 group-hover/link:bg-copper-500 group-hover/link:text-white group-hover/link:translate-x-1">
-                          <ArrowRight size={14} />
+                        <Icon size={19} strokeWidth={1.7} />
+                      </span>
+
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-display text-xl uppercase tracking-wide text-navy-950 sm:text-2xl">
+                          {service.title}
                         </span>
-                      </Link>
-                    </div>
-                  </motion.article>
+                        <span className="hidden text-xs text-steel-500 sm:block">
+                          {service.description}
+                        </span>
+                      </span>
+
+                      <span className="hidden shrink-0 rounded-md border border-steel-200 bg-steel-50 px-2 py-0.5 font-mono text-[10px] font-semibold text-steel-600 md:inline-block">
+                        {service.spec}
+                      </span>
+
+                      <ChevronDown
+                        size={18}
+                        className={`shrink-0 text-steel-400 transition-transform duration-300 ${
+                          isOpen ? "rotate-180 text-copper-500" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-8 pb-8 pl-[68px] sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1.2fr]">
+                            <p className="text-sm leading-relaxed text-steel-600 sm:hidden">
+                              {service.description}
+                            </p>
+
+                            <ul className="space-y-2.5">
+                              {service.capabilities.map((cap) => (
+                                <li
+                                  key={cap}
+                                  className="flex items-start gap-2.5 text-sm text-steel-700"
+                                >
+                                  <CheckCircle2
+                                    size={15}
+                                    className="mt-0.5 shrink-0 text-copper-500"
+                                  />
+                                  <span>{cap}</span>
+                                </li>
+                              ))}
+                            </ul>
+
+                            <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-steel-200 bg-steel-50/60 p-5">
+                              <p className="text-xs leading-relaxed text-steel-600">
+                                Full scope, deliverables, and workflow for
+                                this discipline.
+                              </p>
+                              <Link
+                                href={service.href}
+                                className="group/link inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-navy-950 transition-colors hover:text-copper-600"
+                              >
+                                Explore Service Details
+                                <ArrowRight
+                                  size={14}
+                                  className="transition-transform group-hover/link:translate-x-1"
+                                />
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 );
               })}
             </AnimatePresence>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── WORKFLOW TIMELINE ─────────────────────────────────── */}
-      <section className="border-t border-steel-200/80 bg-white py-24 md:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-            <div className="lg:sticky lg:top-32">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
-                PROVEN METHODOLOGY
-              </span>
-              <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
-                From Design
-                <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
-                  To Fabrication.
-                </span>
-              </h2>
-
-              <p className="mt-6 text-base leading-relaxed text-steel-700">
-                Our workflow is structured around understanding project
-                requirements first, then coordinating, modeling, detailing,
-                and delivering project information.
-              </p>
-
-              <div className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-copper-500/30 bg-copper-50/50 p-4">
-                <Workflow size={20} className="text-copper-600" />
-                <span className="text-xs font-semibold text-navy-950">
-                  Zero-Clash Tolerance Execution Standard
-                </span>
-              </div>
-            </div>
-
-            {/* Stepper Vertical Workbench */}
-            <div className="space-y-4">
-              {workflow.map((item) => (
-                <div
-                  key={item.number}
-                  className="group rounded-2xl border border-steel-200/90 bg-white p-6 transition-all duration-300 hover:border-copper-400 hover:bg-copper-50/20 hover:shadow-md"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy-950 font-mono text-xs font-bold text-white transition-colors group-hover:bg-copper-500">
-                      {item.number}
-                    </span>
-
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] font-bold uppercase text-copper-600">
-                          {item.phase}
-                        </span>
-                      </div>
-                      <h3 className="mt-1 font-display text-2xl uppercase tracking-wide text-navy-950 group-hover:text-copper-600 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 text-xs leading-relaxed text-steel-700">
-                        {item.text}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ── 3 PILLARS WORKBENCH ──────────────────────────────── */}
-      <section className="border-t border-steel-200/80 bg-[#fafbfc] py-20 lg:py-28">
+      {/* ── WORKFLOW — horizontal stepper ─────────────────────── */}
+      <section className="border-t border-steel-200/80 bg-white py-24 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-3">
-            {pillars.map(({ icon: Icon, label, title, desc }) => (
-              <div
-                key={title}
-                className="group relative flex flex-col justify-between rounded-2xl border border-steel-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-copper-400 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-copper-500/20 bg-copper-50 text-copper-600">
-                    <Icon size={22} />
-                  </div>
-                  <p className="mt-6 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-copper-600">
-                    {label}
-                  </p>
-                  <h3 className="mt-1 font-display text-2xl uppercase text-navy-950 group-hover:text-copper-600 transition-colors">
-                    {title}
+          <div className="max-w-2xl">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-600">
+              Proven Methodology
+            </span>
+            <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-navy-950 sm:text-5xl">
+              From Design
+              <span className="block bg-gradient-to-r from-copper-600 to-copper-500 bg-clip-text text-transparent">
+                To Fabrication.
+              </span>
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-steel-700">
+              Our workflow is structured around understanding project
+              requirements first, then coordinating, modeling, detailing,
+              and delivering project information.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 overflow-x-auto pb-2 md:grid-cols-5">
+            {workflow.map((item, i) => (
+              <div key={item.number} className="relative">
+                <div className="rounded-2xl border border-steel-200 bg-white p-5 transition-colors hover:border-copper-400 hover:bg-copper-50/20">
+                  <span className="font-mono text-[10px] font-bold uppercase text-copper-600">
+                    {item.phase}
+                  </span>
+                  <h3 className="mt-2 font-display text-xl uppercase tracking-wide text-navy-950">
+                    {item.title}
                   </h3>
-                  <p className="mt-3 text-xs leading-relaxed text-steel-600">
-                    {desc}
+                  <p className="mt-2 text-xs leading-relaxed text-steel-600">
+                    {item.text}
                   </p>
                 </div>
+                {i < workflow.length - 1 && (
+                  <span className="absolute -right-4 top-1/2 hidden -translate-y-1/2 text-steel-300 md:block">
+                    <ArrowRight size={14} />
+                  </span>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SCOPE NOTE BAR ───────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-navy-950 py-16 text-white lg:py-20">
+      {/* ── CLOSING CTA ────────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-navy-950 px-6 py-20 text-white md:py-24">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.03]"
           style={{
@@ -574,79 +524,48 @@ export default function ServicesPage() {
             backgroundSize: "40px 40px",
           }}
         />
-
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="relative mx-auto max-w-7xl">
+          <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
             <div>
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[10px] uppercase text-copper-400">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[10px] uppercase text-copper-400">
                 <ShieldCheck size={12} />
-                <span>Project Scope Clarification</span>
+                Project Scope Clarification
               </div>
-              <h2 className="font-display text-3xl uppercase leading-tight sm:text-4xl">
-                Engineering Responsibility
-                <span className="block text-copper-400">Follows Project Scope.</span>
+              <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] sm:text-5xl">
+                One Team.
+                <span className="block bg-gradient-to-r from-copper-400 via-copper-300 to-copper-500 bg-clip-text text-transparent">
+                  Multiple Technical Capabilities.
+                </span>
               </h2>
-              <p className="mt-4 max-w-3xl text-xs leading-relaxed text-steel-400 md:text-sm">
-                Specific engineering and design responsibilities for
-                connections or delegated design services are subject to the
-                project scope, contractual requirements, applicable approvals,
-                and responsibilities defined for each project.
+              <p className="mt-5 max-w-xl text-sm leading-relaxed text-steel-400 md:text-base">
+                Engineering and design responsibilities for connections or
+                delegated design services are subject to the project scope,
+                contractual requirements, and applicable approvals defined
+                for each project.
               </p>
             </div>
 
-            <div className="shrink-0">
+            <div className="flex flex-col items-start gap-3 lg:items-end">
               <Link
                 href="/contact"
-                className="group inline-flex items-center gap-3 rounded-xl border border-copper-500/80 px-7 py-3.5 text-xs font-bold uppercase tracking-[0.2em] text-copper-300 transition-all duration-300 hover:bg-copper-500 hover:text-white"
+                className="group inline-flex items-center gap-3 rounded-xl bg-copper-500 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-copper-500/25 transition-all duration-300 hover:bg-copper-400"
               >
-                <span>Discuss Your Scope</span>
+                Start A Project
                 <ArrowRight
-                  size={15}
+                  size={16}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
+              </Link>
+              <Link
+                href="/contact"
+                className="text-xs font-semibold uppercase tracking-[0.18em] text-steel-400 transition-colors hover:text-copper-300"
+              >
+                Or discuss your scope directly →
               </Link>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* ── BOTTOM CINEMATIC CTA ─────────────────────────────── */}
-      <section className="relative overflow-hidden bg-navy-950 px-6 py-20 text-white md:py-24">
-        <div className="relative mx-auto max-w-7xl">
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-copper-600 via-copper-500 to-[#8c4614] p-8 shadow-2xl md:p-14 lg:p-16">
-            <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/80">
-                  Kenz Engineering LLC
-                </p>
-                <h2 className="mt-3 font-display text-4xl uppercase leading-[0.92] text-white sm:text-5xl lg:text-6xl">
-                  One Team.
-                  <span className="block text-navy-950">
-                    Multiple Technical Capabilities.
-                  </span>
-                </h2>
-                <p className="mt-6 max-w-2xl text-sm leading-relaxed text-white/90">
-                  Tell us about your project requirements and let&apos;s discuss how
-                  Kenz Engineering can support your detailing and engineering
-                  workflow.
-                </p>
-              </div>
-
-              <div className="shrink-0">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-4 rounded-xl bg-white px-9 py-4 text-xs font-bold uppercase tracking-[0.2em] text-navy-950 shadow-md transition-all duration-300 hover:bg-navy-950 hover:text-white hover:scale-105"
-                >
-                  <span>Start A Project</span>
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-copper-500/60 to-transparent" />
       </section>
     </main>
   );
