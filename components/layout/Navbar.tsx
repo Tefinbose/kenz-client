@@ -306,6 +306,10 @@ export default function Navbar() {
     </Link>
   );
 
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <>
       {/*

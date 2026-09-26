@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -18,6 +18,9 @@ import {
   Zap,
   Target,
   Layers,
+  MapPin,
+  Clock,
+  ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -121,8 +124,44 @@ const faqItems = [
 
 /* ═══════════════════════════════════════════════ PAGE ═══ */
 
+interface PublicCareer {
+  _id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  experience: string;
+  description: string;
+  requirements: string[];
+  responsibilities: string[];
+  benefits: string[];
+  isActive: boolean;
+}
+
 export default function CareersPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openings, setOpenings] = useState<PublicCareer[]>([]);
+  const [loadingOpenings, setLoadingOpenings] = useState<boolean>(true);
+  const [expandedRole, setExpandedRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadCareers() {
+      try {
+        const res = await fetch("/api/public/careers");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.careers) {
+            setOpenings(data.careers);
+          }
+        }
+      } catch (err) {
+        console.warn("Could not fetch careers from API:", err);
+      } finally {
+        setLoadingOpenings(false);
+      }
+    }
+    loadCareers();
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#fafbfc] overflow-hidden">
@@ -471,51 +510,167 @@ export default function CareersPage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
 
-            {/* Openings notice card */}
+            {/* Openings notice or live positions card */}
             <motion.div
               initial={{ opacity: 0, x: -25 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <TiltCard maxTilt={6} className="relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-8 backdrop-blur-sm lg:p-10">
-                <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l-2 border-t-2 border-copper-400/50" />
-                <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r-2 border-t-2 border-copper-400/50" />
-                <div className="pointer-events-none absolute bottom-3 left-3 h-3 w-3 border-b-2 border-l-2 border-copper-400/50" />
-                <div className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b-2 border-r-2 border-copper-400/50" />
+              {openings.length > 0 ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-copper-400 animate-pulse" />
+                      <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-copper-400">
+                        KENZ / LIVE OPENINGS ({openings.length})
+                      </span>
+                    </div>
+                    <span className="font-mono text-[10px] text-steel-400">
+                      Engineering Opportunities
+                    </span>
+                  </div>
 
-                <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                  <span className="h-2 w-2 rounded-full bg-copper-400 animate-pulse" />
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-copper-400">
-                    KENZ / OPENINGS / NOW
-                  </span>
+                  <div className="space-y-4">
+                    {openings.map((job) => {
+                      const isExpanded = expandedRole === job._id;
+                      return (
+                        <TiltCard
+                          key={job._id}
+                          maxTilt={4}
+                          className="relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-6 backdrop-blur-sm transition-all hover:border-copper-500/40"
+                        >
+                          <div className="pointer-events-none absolute left-3 top-3 h-2 w-2 border-l-2 border-t-2 border-copper-400/40" />
+                          <div className="pointer-events-none absolute right-3 top-3 h-2 w-2 border-r-2 border-t-2 border-copper-400/40" />
+
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="rounded-full border border-copper-500/40 bg-copper-500/15 px-2.5 py-0.5 font-mono text-[9px] font-semibold text-copper-300">
+                              {job.department}
+                            </span>
+                            <span className="inline-flex items-center gap-1 font-mono text-[10px] text-steel-400">
+                              <MapPin size={11} className="text-copper-400" />
+                              {job.location}
+                            </span>
+                            <span className="inline-flex items-center gap-1 font-mono text-[10px] text-steel-400">
+                              <Clock size={11} className="text-steel-500" />
+                              {job.experience}
+                            </span>
+                          </div>
+
+                          <h3 className="mt-3 font-display text-2xl uppercase tracking-tight text-white">
+                            {job.title}
+                          </h3>
+
+                          <p className="mt-2 text-xs leading-relaxed text-steel-300">
+                            {job.description}
+                          </p>
+
+                          {/* Collapsible Requirements & Responsibilities */}
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="mt-4 border-t border-white/10 pt-4 space-y-3 text-xs"
+                            >
+                              {job.responsibilities?.length > 0 && (
+                                <div>
+                                  <div className="font-mono text-[10px] uppercase text-copper-400 font-semibold mb-1.5">
+                                    Responsibilities:
+                                  </div>
+                                  <ul className="space-y-1 text-steel-400 pl-4 list-disc">
+                                    {job.responsibilities.map((r, idx) => (
+                                      <li key={idx}>{r}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+
+                              {job.requirements?.length > 0 && (
+                                <div>
+                                  <div className="font-mono text-[10px] uppercase text-copper-400 font-semibold mb-1.5">
+                                    Requirements:
+                                  </div>
+                                  <ul className="space-y-1 text-steel-400 pl-4 list-disc">
+                                    {job.requirements.map((r, idx) => (
+                                      <li key={idx}>{r}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </motion.div>
+                          )}
+
+                          <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
+                            <button
+                              onClick={() => setExpandedRole(isExpanded ? null : job._id)}
+                              className="inline-flex items-center gap-1 text-[11px] font-mono text-steel-400 hover:text-copper-300"
+                            >
+                              <span>{isExpanded ? "Hide Details" : "View Details"}</span>
+                              <ChevronDown
+                                size={13}
+                                className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                              />
+                            </button>
+
+                            <MagneticButton>
+                              <Link
+                                href={`mailto:sales@kenzengineering.com?subject=Application%20for%20${encodeURIComponent(
+                                  job.title
+                                )}`}
+                                className="group inline-flex items-center gap-2 rounded-xl border border-copper-500/40 bg-copper-500/10 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-copper-300 transition-all hover:border-copper-500 hover:bg-copper-500 hover:text-white"
+                              >
+                                <Mail size={13} />
+                                <span>Apply Now</span>
+                                <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                              </Link>
+                            </MagneticButton>
+                          </div>
+                        </TiltCard>
+                      );
+                    })}
+                  </div>
                 </div>
+              ) : (
+                <TiltCard maxTilt={6} className="relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-8 backdrop-blur-sm lg:p-10">
+                  <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l-2 border-t-2 border-copper-400/50" />
+                  <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r-2 border-t-2 border-copper-400/50" />
+                  <div className="pointer-events-none absolute bottom-3 left-3 h-3 w-3 border-b-2 border-l-2 border-copper-400/50" />
+                  <div className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b-2 border-r-2 border-copper-400/50" />
 
-                <div className="mt-7 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-copper-500/30 bg-copper-500/15">
-                  <BriefcaseBusiness size={22} className="text-copper-400" />
-                </div>
+                  <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+                    <span className="h-2 w-2 rounded-full bg-copper-400 animate-pulse" />
+                    <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-copper-400">
+                      KENZ / OPENINGS / NOW
+                    </span>
+                  </div>
 
-                <h3 className="mt-5 font-display text-3xl uppercase tracking-tight text-white">
-                  <GlitchText>No Active Openings</GlitchText>
-                </h3>
-                <p className="mt-4 leading-relaxed text-steel-400">
-                  We are not currently advertising specific openings, but we are always
-                  interested in hearing from capable professionals. If you believe you
-                  can contribute to our team, we encourage you to reach out.
-                </p>
-                <div className="mt-8 h-px w-full bg-gradient-to-r from-copper-500/40 to-transparent" />
+                  <div className="mt-7 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-copper-500/30 bg-copper-500/15">
+                    <BriefcaseBusiness size={22} className="text-copper-400" />
+                  </div>
 
-                <MagneticButton className="mt-6 inline-block">
-                  <Link
-                    href="mailto:sales@kenzengineering.com?subject=Career%20Application"
-                    className="group inline-flex items-center gap-3 rounded-xl border border-copper-500/40 bg-copper-500/10 px-6 py-3 text-xs font-bold uppercase tracking-wider text-copper-300 transition-all hover:border-copper-500 hover:bg-copper-500 hover:text-white"
-                  >
-                    <Mail size={14} />
-                    Submit Your Resume
-                    <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
-                  </Link>
-                </MagneticButton>
-              </TiltCard>
+                  <h3 className="mt-5 font-display text-3xl uppercase tracking-tight text-white">
+                    <GlitchText>No Active Openings</GlitchText>
+                  </h3>
+                  <p className="mt-4 leading-relaxed text-steel-400">
+                    We are not currently advertising specific openings, but we are always
+                    interested in hearing from capable professionals. If you believe you
+                    can contribute to our team, we encourage you to reach out.
+                  </p>
+                  <div className="mt-8 h-px w-full bg-gradient-to-r from-copper-500/40 to-transparent" />
+
+                  <MagneticButton className="mt-6 inline-block">
+                    <Link
+                      href="mailto:sales@kenzengineering.com?subject=Career%20Application"
+                      className="group inline-flex items-center gap-3 rounded-xl border border-copper-500/40 bg-copper-500/10 px-6 py-3 text-xs font-bold uppercase tracking-wider text-copper-300 transition-all hover:border-copper-500 hover:bg-copper-500 hover:text-white"
+                    >
+                      <Mail size={14} />
+                      Submit Your Resume
+                      <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </MagneticButton>
+                </TiltCard>
+              )}
             </motion.div>
 
             {/* FAQ Accordion */}

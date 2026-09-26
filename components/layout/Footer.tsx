@@ -93,6 +93,10 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="bg-navy-950 text-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
