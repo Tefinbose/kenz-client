@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
   ChevronRight,
   Layers,
   FileCheck,
@@ -161,13 +160,10 @@ export default function ProcessSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-copper-500/25 bg-copper-500/10 px-3.5 py-1.5 font-mono text-xs uppercase tracking-widest text-copper-400"
+              className="mb-5 inline-flex items-center gap-2 rounded-md border border-copper-500/30 bg-copper-500/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-300"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-              </span>
-              Execution Pipeline & Methodology
+              <Workflow size={13} className="text-copper-400" />
+              <span>Execution Pipeline & Methodology</span>
             </motion.div>
 
             {/* Main Headline */}
@@ -507,7 +503,7 @@ export default function ProcessSection() {
           className="mt-14 flex flex-col items-center justify-between gap-6 rounded-2xl border border-white/[0.08] bg-navy-900/40 p-6 md:flex-row md:px-8"
         >
           <div className="flex items-center gap-3">
-            <Sparkles size={18} className="text-copper-400" />
+            <ShieldCheck size={20} className="shrink-0 text-copper-400" />
             <p className="text-xs text-steel-300 md:text-sm">
               <span className="font-semibold text-white">
                 Turnkey Detailing Governance:
@@ -517,14 +513,14 @@ export default function ProcessSection() {
             </p>
           </div>
 
-          <div className="flex items-center gap-6 text-xs font-mono uppercase tracking-wider text-steel-400">
-            <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              RFI Turnaround &lt; 24h
+          <div className="flex flex-wrap items-center gap-6 text-xs font-semibold text-steel-300">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 size={15} className="text-copper-400" />
+              24-Hour RFI Turnaround SLA
             </span>
-            <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-copper-400" />
-              100% NC1 Verified
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 size={15} className="text-copper-400" />
+              100% NC1 & DXF Verified
             </span>
           </div>
         </motion.div>

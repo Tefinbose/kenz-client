@@ -9,11 +9,10 @@ import {
   Cable,
   Calculator,
   CheckCircle2,
-  Cpu,
+  Layers,
   Layers3,
   Ruler,
   ScanLine,
-  Sparkles,
   ShieldCheck,
   Workflow,
   Crosshair,
@@ -27,8 +26,6 @@ import {
   ShimmerText,
   RevealText,
   CountUp,
-  GlitchText,
-  FloatingParticles,
   ScrollProgressBar,
 } from "@/components/ui/ReactBits";
 
@@ -112,7 +109,7 @@ const process = [
     title: "Model",
     description: "Develop coordinated 3D project information.",
     detail: "We build coordinated 3D models around the project's structural and fabrication requirements.",
-    icon: Cpu,
+    icon: Layers,
   },
   {
     number: "04",
@@ -160,14 +157,6 @@ export default function ProjectsPage() {
         <div className="pointer-events-none absolute -left-60 top-1/4 h-[600px] w-[600px] rounded-full bg-copper-500/10 blur-[160px]" />
         <div className="pointer-events-none absolute -right-60 bottom-0 h-[500px] w-[500px] rounded-full bg-copper-600/8 blur-[140px]" />
 
-        {/* Floating particles */}
-        <FloatingParticles count={20} />
-
-        {/* Technical watermark */}
-        <div className="pointer-events-none absolute right-8 top-32 hidden font-mono text-[10px] tracking-[0.25em] text-white/20 lg:block">
-          CAD // KENZ-PRJ • EXP-001
-        </div>
-
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
 
@@ -179,16 +168,12 @@ export default function ProjectsPage() {
             >
               {/* Badge */}
               <div className="mb-7 flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-                  </span>
-                  03 / Project Experience
+                <div className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md">
+                  <span>03 / Project Experience</span>
                 </div>
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-copper-500/30 bg-copper-500/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-copper-300">
-                  <Sparkles size={11} className="text-copper-400" />
-                  6 Core Disciplines
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-copper-500/30 bg-copper-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-copper-300">
+                  <CheckCircle2 size={12} className="text-copper-400" />
+                  <span>6 Core Disciplines</span>
                 </div>
               </div>
 
@@ -237,10 +222,10 @@ export default function ProjectsPage() {
 
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-copper-500/30 bg-copper-500/15 text-copper-400 shadow-inner">
-                  <Cpu size={22} className="animate-[pulse_3s_ease-in-out_infinite]" />
+                  <Layers size={22} />
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-400">Active Disciplines</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-copper-400">Active Disciplines</p>
                   <h3 className="mt-1 text-xl font-bold tracking-tight text-white">6 Core Service Areas</h3>
                   <p className="mt-2 text-xs leading-relaxed text-steel-400">
                     Full-cycle structural steel support from estimation to erection drawings.
@@ -380,7 +365,7 @@ export default function ProjectsPage() {
                   </div>
 
                   <h3 className="mt-6 font-display text-3xl uppercase tracking-tight text-navy-950 sm:text-4xl">
-                    <GlitchText>{process[activeStep].title}</GlitchText>
+                    {process[activeStep].title}
                   </h3>
                   <p className="mt-2 text-sm font-semibold uppercase tracking-wider text-copper-600">
                     {process[activeStep].description}
@@ -421,8 +406,6 @@ export default function ProjectsPage() {
           }}
         />
         <div className="pointer-events-none absolute -right-60 top-0 h-[500px] w-[500px] rounded-full bg-copper-500/10 blur-[160px]" />
-        <FloatingParticles count={14} />
-
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -431,9 +414,9 @@ export default function ProjectsPage() {
             className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
           >
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md">
-                <Sparkles size={12} />
-                Project Portfolio
+              <div className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md">
+                <Layers size={13} />
+                <span>Project Portfolio</span>
               </div>
               <h2 className="mt-5 font-display text-4xl uppercase sm:text-5xl lg:text-6xl">
                 Technical Capabilities
@@ -579,7 +562,6 @@ export default function ProjectsPage() {
             backgroundSize: "60px 60px",
           }}
         />
-        <FloatingParticles count={12} />
         <div className="pointer-events-none absolute -left-40 top-0 h-[400px] w-[400px] rounded-full bg-white/10 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">

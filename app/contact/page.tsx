@@ -8,7 +8,7 @@ import {
   CheckCircle2,
   Clock,
   ShieldCheck,
-  Sparkles,
+  MessageSquare,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -51,11 +51,6 @@ export default function ContactPage() {
         <div className="pointer-events-none absolute -left-48 top-1/4 h-[550px] w-[550px] rounded-full bg-copper-500/12 blur-[140px]" />
         <div className="pointer-events-none absolute -right-48 bottom-1/4 h-[550px] w-[550px] rounded-full bg-copper-600/12 blur-[150px]" />
 
-        {/* Technical Coordinate Watermark */}
-        <div className="pointer-events-none absolute right-8 top-32 hidden font-mono text-[10px] tracking-[0.25em] text-white/20 lg:block">
-          CAD // 44°47&apos;49.9&quot;N 106°57&apos;22.3&quot;W • EL +3,743FT
-        </div>
-
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             {/* Left Content Column */}
@@ -66,17 +61,13 @@ export default function ContactPage() {
             >
               {/* Dual Modern Badges */}
               <div className="mb-7 flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-                  </span>
-                  04 / Contact Kenz Engineering
+                <div className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md">
+                  <span>04 / Contact Kenz Engineering</span>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-copper-500/30 bg-copper-500/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-copper-300">
-                  <Sparkles size={12} className="text-copper-400" />
-                  Direct RFQ Desk
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-copper-500/30 bg-copper-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-copper-300">
+                  <CheckCircle2 size={12} className="text-copper-400" />
+                  <span>Direct RFQ Desk</span>
                 </div>
               </div>
 
@@ -198,12 +189,9 @@ export default function ContactPage() {
               className="lg:sticky lg:top-32"
             >
               {/* Badge */}
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-copper-200 bg-copper-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-copper-700">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-600" />
-                </span>
-                Project Inquiry
+              <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-copper-200 bg-copper-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-700">
+                <CheckCircle2 size={13} className="text-copper-600" />
+                <span>Project Inquiry</span>
               </div>
 
               <h2 className="font-display text-4xl uppercase leading-[0.95] text-navy-950 sm:text-5xl md:text-6xl">
@@ -221,8 +209,8 @@ export default function ContactPage() {
 
               {/* Inquiry Next Steps Timeline */}
               <div className="mt-10 space-y-6 rounded-2xl border border-steel-200/90 bg-white p-7 shadow-sm">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-copper-600">
-                  <Sparkles size={14} />
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-copper-600">
+                  <CheckCircle2 size={14} />
                   <span>What Happens Next</span>
                 </div>
 

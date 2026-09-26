@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   CheckCircle2,
   Clock,
-  Sparkles,
   ArrowUpRight,
   ArrowRight,
   Star,
@@ -18,7 +17,6 @@ import {
   Compass,
   Zap,
   TrendingUp,
-  Cpu,
   ChevronRight,
   Filter,
 } from "lucide-react";
@@ -83,10 +81,6 @@ export default function AccoladesPage() {
         <div className="pointer-events-none absolute -left-48 top-1/4 h-[550px] w-[550px] rounded-full bg-copper-500/12 blur-[140px]" />
         <div className="pointer-events-none absolute -right-48 bottom-1/4 h-[550px] w-[550px] rounded-full bg-copper-600/12 blur-[150px]" />
 
-        {/* Technical Coordinate Watermark */}
-        <div className="pointer-events-none absolute right-8 top-32 hidden font-mono text-[10px] tracking-[0.25em] text-white/20 lg:block">
-          CAD // 44°47&apos;49.9&quot;N 106°57&apos;22.3&quot;W • EL +3,743FT
-        </div>
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -98,17 +92,13 @@ export default function AccoladesPage() {
             >
               {/* Dual Modern Badges */}
               <div className="mb-7 flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-                  </span>
-                  {data.hero.badge}
+                <div className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md">
+                  <span>{data.hero.badge}</span>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-copper-500/30 bg-copper-500/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-copper-300">
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-copper-500/30 bg-copper-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-copper-300">
                   <Award size={12} className="text-copper-400" />
-                  Credibility & Trust
+                  <span>Credibility & Trust</span>
                 </div>
               </div>
 
@@ -125,8 +115,8 @@ export default function AccoladesPage() {
                 <p className="max-w-xl text-base leading-relaxed text-steel-300 md:text-lg">
                   {data.hero.leadStatement}
                 </p>
-                <p className="mt-2 text-xs font-mono text-copper-400 uppercase tracking-widest">
-                  // AISC & NISD Verified Detailing Standards
+                <p className="mt-2 text-xs font-semibold text-copper-400 uppercase tracking-wider">
+                  AISC & NISD Verified Detailing Standards
                 </p>
               </div>
 
@@ -251,8 +241,8 @@ export default function AccoladesPage() {
           {/* Section Header */}
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-copper-200 bg-copper-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-copper-700">
-                <Sparkles size={14} />
+              <div className="inline-flex items-center gap-2 rounded-md border border-copper-200 bg-copper-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-700">
+                <Award size={14} />
                 <span>Recognition & Achievement</span>
               </div>
               <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] text-navy-950 sm:text-5xl md:text-6xl">

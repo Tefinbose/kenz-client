@@ -192,10 +192,7 @@ export default function ServiceDetailPage({
               ))}
 
               <div className="flex items-center gap-2 border-t border-white/10 px-6 py-3.5">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                </span>
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 <span className="text-[11px] text-steel-400">
                   Available for project inquiries
                 </span>

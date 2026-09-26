@@ -5,14 +5,15 @@ import { getSessionAdmin } from "@/lib/auth";
 import { Career } from "@/models";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const updateCareerSchema = z.object({
-  title: z.string().min(2).optional(),
-  department: z.string().min(2).optional(),
-  location: z.string().min(2).optional(),
-  type: z.string().min(2).optional(),
+  title: z.string().min(1).optional(),
+  department: z.string().min(1).optional(),
+  location: z.string().min(1).optional(),
+  type: z.string().min(1).optional(),
   experience: z.string().optional(),
-  description: z.string().min(10).optional(),
+  description: z.string().min(1).optional(),
   requirements: z.array(z.string()).optional(),
   responsibilities: z.array(z.string()).optional(),
   benefits: z.array(z.string()).optional(),

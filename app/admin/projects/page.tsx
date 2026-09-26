@@ -24,7 +24,7 @@ export default function AdminProjectsPage() {
       {/* Top Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/10 pb-6">
         <div>
-          <div className="flex items-center gap-2 font-mono text-xs text-copper-400 uppercase tracking-widest">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-copper-400">
             <Layers size={14} />
             <span>Portfolio Management</span>
           </div>
@@ -60,13 +60,13 @@ export default function AdminProjectsPage() {
       </div>
 
       {/* Projects Table Placeholder */}
-      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-8 text-center backdrop-blur-xl">
+      <div className="rounded-2xl border border-white/10 bg-[#111827] p-8 text-center shadow-sm">
         <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-copper-400 mb-3">
           <FolderGit2 size={24} />
         </div>
         <h3 className="text-base font-semibold text-white">Project Records Ready</h3>
         <p className="mt-1 text-xs text-steel-400 max-w-md mx-auto">
-          Database model <code className="text-copper-400 font-mono">Project</code> is initialized. Use the upcoming Phase 6 data migration to populate projects from existing static data or create new records.
+          Database model <code className="text-copper-400 font-mono">Project</code> is initialized. Use the upcoming data migration to populate projects from existing static data or create new records.
         </p>
       </div>
     </div>

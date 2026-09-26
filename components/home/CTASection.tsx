@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Sparkles, Shield, Cpu, Layers } from "lucide-react";
+import { ArrowRight, CheckCircle2, Shield, Layers, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const keyPillars = [
   {
     label: "Engineering Detail",
-    icon: Cpu,
+    icon: Layers,
   },
   {
     label: "Practical Solutions",
@@ -65,19 +65,16 @@ export default function CTASection() {
           <div className="relative z-10">
             <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                {/* Modern Pill Badge */}
+                {/* Modern Badge */}
                 <motion.div
                   initial={{ opacity: 0, x: -15 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-white shadow-inner backdrop-blur-md"
+                  className="mb-8 inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-md"
                 >
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
-                  </span>
-                  Start A Project
+                  <Layers size={13} className="text-white/90" />
+                  <span>Start A Project</span>
                 </motion.div>
 
                 {/* Monumental Headline */}

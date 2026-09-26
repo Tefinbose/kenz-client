@@ -9,9 +9,9 @@ import {
   Calculator,
   Cable,
   Layers3,
-  Ruler,
   CheckCircle2,
-  Sparkles,
+  Layers,
+  Ruler,
   ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -296,13 +296,10 @@ export default function ServicesPreview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-copper-500/25 bg-copper-500/10 px-3.5 py-1.5 font-mono text-xs uppercase tracking-widest text-copper-400"
+              className="mb-5 inline-flex items-center gap-2 rounded-md border border-copper-500/30 bg-copper-500/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-300"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-              </span>
-              Engineering Disciplines & Scope
+              <Layers size={13} className="text-copper-400" />
+              <span>Engineering Disciplines & Scope</span>
             </motion.div>
 
             {/* Main Headline */}
@@ -411,7 +408,7 @@ export default function ServicesPreview() {
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div>
               <div className="flex items-center gap-3">
-                <Sparkles size={18} className="text-copper-400" />
+                <Layers size={18} className="text-copper-400" />
                 <h4 className="text-base font-semibold text-white">
                   Comprehensive Fabrication & Construction Workflows
                 </h4>

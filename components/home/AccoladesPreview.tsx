@@ -4,11 +4,11 @@ import Link from "next/link";
 import {
   Crosshair,
   ShieldCheck,
-  Cpu,
+  Layers,
   Users,
   ArrowUpRight,
   CheckCircle2,
-  Sparkles,
+  Award,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -31,7 +31,7 @@ const strengths = [
     number: "03",
     title: "Technology",
     text: "Modern BIM workflows and industry-standard detailing software supporting project coordination.",
-    icon: Cpu,
+    icon: Layers,
     metric: "Advanced BIM Tech",
   },
   {
@@ -93,13 +93,10 @@ export default function AccoladesPreview() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
-            {/* Pill Badge */}
-            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-copper-200/80 bg-copper-50/80 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-copper-700 shadow-sm backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-600" />
-              </span>
-              Recognition & Achievement
+            {/* Badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-copper-200/80 bg-copper-50/80 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-800 shadow-sm backdrop-blur-sm">
+              <Award size={13} className="text-copper-600" />
+              <span>Recognition & Achievement</span>
             </div>
 
             <h2 className="font-display text-5xl uppercase tracking-tight text-navy-950 sm:text-6xl md:text-7xl">
@@ -206,8 +203,8 @@ export default function AccoladesPreview() {
 
           <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
             <div>
-              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-copper-600">
-                <Sparkles size={14} />
+              <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-copper-600">
+                <Award size={14} />
                 <span>Our Core Philosophy</span>
               </div>
               <p className="font-display text-3xl uppercase leading-tight text-navy-950 sm:text-4xl md:text-5xl">

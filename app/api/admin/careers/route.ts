@@ -5,19 +5,20 @@ import { getSessionAdmin } from "@/lib/auth";
 import { Career } from "@/models";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const careerSchema = z.object({
-  title: z.string().min(2, "Title is required"),
-  department: z.string().min(2, "Department is required"),
-  location: z.string().min(2, "Location is required"),
-  type: z.string().min(2, "Employment type is required"),
-  experience: z.string().default("2+ years"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  requirements: z.array(z.string()).default([]),
-  responsibilities: z.array(z.string()).default([]),
-  benefits: z.array(z.string()).default([]),
-  isActive: z.boolean().default(true),
-  order: z.number().default(0),
+  title: z.string().min(1, "Job title is required"),
+  department: z.string().min(1, "Department is required"),
+  location: z.string().min(1, "Location is required"),
+  type: z.string().min(1, "Employment type is required"),
+  experience: z.string().optional().default("3+ years"),
+  description: z.string().min(1, "Description is required"),
+  requirements: z.array(z.string()).optional().default([]),
+  responsibilities: z.array(z.string()).optional().default([]),
+  benefits: z.array(z.string()).optional().default([]),
+  isActive: z.boolean().optional().default(true),
+  order: z.number().optional().default(0),
 });
 
 function slugify(text: string): string {

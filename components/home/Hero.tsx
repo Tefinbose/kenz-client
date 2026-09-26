@@ -83,20 +83,15 @@ export default function Hero() {
 
   {/* Eyebrow */}
   <div
-    className={`${reveal} mb-6 inline-flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1.5 backdrop-blur-xl transition-all duration-300 hover:border-copper-500/30 hover:bg-white/[0.05] [animation-delay:50ms]`}
+    className={`${reveal} mb-6 inline-flex w-fit items-center gap-2.5 rounded-md border border-steel-700/70 bg-navy-900/80 px-3 py-1.5 backdrop-blur-md transition-all duration-300 [animation-delay:50ms]`}
   >
-    <span className="relative flex h-1.5 w-1.5">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-60 motion-reduce:animate-none" />
-      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-copper-500" />
-    </span>
-
-    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-steel-200">
+    <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-steel-200">
       Kenz Engineering LLC
     </span>
 
-    <span className="h-2.5 w-px bg-white/15" />
+    <span className="h-2.5 w-px bg-white/20" />
 
-    <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-copper-400">
+    <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-copper-400">
       Structural BIM
     </span>
   </div>
@@ -222,12 +217,9 @@ export default function Hero() {
             <SteelStructure />
 
             {/* status tag */}
-            <div className="pointer-events-none absolute left-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-[#0f2539]/10 bg-white/80 py-1.5 pl-3 pr-3.5 text-xs font-semibold text-[#0f2539] shadow-sm backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-500 opacity-60 motion-reduce:animate-none" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-              </span>
-              Live 3D model
+            <div className="pointer-events-none absolute left-5 top-5 z-10 inline-flex items-center gap-2 rounded-lg border border-[#0f2539]/10 bg-white/90 py-1.5 px-3 text-xs font-semibold text-[#0f2539] shadow-sm backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-copper-500" />
+              Interactive 3D Model
             </div>
 
             {/* floating chips */}

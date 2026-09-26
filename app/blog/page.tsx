@@ -8,10 +8,9 @@ import {
   ArrowRight,
   ArrowUpRight,
   Search,
-  Sparkles,
   Layers,
   Ruler,
-  Cpu,
+  Building2,
   Calculator,
   Compass,
 } from "lucide-react";
@@ -20,7 +19,7 @@ import { blogPosts } from "@/data/blogData";
 
 const categoryIcons: Record<string, typeof Layers> = {
   "Steel Detailing": Ruler,
-  "BIM Support": Cpu,
+  "BIM Support": Building2,
   "Joist & Deck": Layers,
   Estimation: Calculator,
 };
@@ -61,11 +60,6 @@ export default function BlogPage() {
         <div className="pointer-events-none absolute -left-48 top-1/4 h-[550px] w-[550px] rounded-full bg-copper-500/12 blur-[140px]" />
         <div className="pointer-events-none absolute -right-48 bottom-1/4 h-[550px] w-[550px] rounded-full bg-copper-600/12 blur-[150px]" />
 
-        {/* Technical Coordinate Watermark */}
-        <div className="pointer-events-none absolute right-8 top-32 hidden font-mono text-[10px] tracking-[0.25em] text-white/20 lg:block">
-          DOC // 44°47&apos;49.9&quot;N 106°57&apos;22.3&quot;W • TECHNICAL REPOSITORY
-        </div>
-
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -73,13 +67,10 @@ export default function BlogPage() {
             transition={{ duration: 0.7 }}
             className="max-w-3xl"
           >
-            {/* Exact User Requested Badge */}
-            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-              </span>
-              08. BLOG PAGE
+            {/* Badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md">
+              <BookOpen size={13} className="text-copper-400" />
+              <span>Articles & Insights</span>
             </div>
 
             <h1 className="font-display text-5xl uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl">

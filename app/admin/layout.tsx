@@ -162,19 +162,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     ) || navItems[0];
 
   return (
-    <div className="min-h-screen bg-[#070e1b] text-white flex flex-col antialiased selection:bg-copper-500 selection:text-white">
-      {/* Background blueprint grid watermark */}
-      <div
-        className="pointer-events-none fixed inset-0 opacity-[0.025]"
-        style={{
-          backgroundImage: `
-            linear-gradient(#ffffff 1px, transparent 1px),
-            linear-gradient(90deg, #ffffff 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      />
-
+    <div className="min-h-screen bg-[#0b0f19] text-white flex flex-col antialiased selection:bg-copper-500 selection:text-white">
       {/* ── MOBILE SIDEBAR BACKDROP ── */}
       {sidebarOpen && (
         <div
@@ -199,8 +187,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <div className="font-display text-lg font-bold tracking-wider text-white">
                 KENZ<span className="text-copper-400">ENGINEERING</span>
               </div>
-              <div className="font-mono text-[9px] font-semibold tracking-widest text-copper-400/90 uppercase">
-                Secure Admin CMS
+              <div className="text-[11px] font-medium tracking-wider text-copper-400/90 uppercase">
+                Administration
               </div>
             </div>
           </Link>
@@ -216,8 +204,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* Navigation List */}
         <div className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-white/10">
-          <div className="mb-2 px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-steel-400">
-            Content Management
+          <div className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-steel-400">
+            Navigation
           </div>
 
           <nav className="space-y-1">
@@ -259,26 +247,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               );
             })}
           </nav>
-
-          <div className="mt-8 mb-2 px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-steel-400">
-            External Links
-          </div>
-
-          <Link
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs text-steel-400 hover:bg-white/[0.04] hover:text-copper-300 transition-all border border-transparent hover:border-white/5"
-          >
-            <span className="flex items-center gap-2.5">
-              <ExternalLink size={14} className="text-copper-400" />
-              Live Public Website
-            </span>
-            <ChevronRight
-              size={14}
-              className="text-steel-600 group-hover:text-copper-400 transition-transform group-hover:translate-x-0.5"
-            />
-          </Link>
         </div>
 
         {/* Sidebar Footer / User Profile */}
@@ -341,14 +309,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
           {/* Top Bar Actions */}
           <div className="flex items-center gap-3">
-            {/* Database indicator */}
-            <div className="hidden sm:inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              MongoDB Active
-            </div>
 
             {/* Messages notification icon */}
             <Link

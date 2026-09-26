@@ -31,7 +31,7 @@ export default function AdminSettingsPage() {
     <div className="space-y-8 max-w-4xl">
       {/* Top Header */}
       <div className="border-b border-white/10 pb-6">
-        <div className="flex items-center gap-2 font-mono text-xs text-copper-400 uppercase tracking-widest">
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-copper-400">
           <Settings size={14} />
           <span>System Configuration</span>
         </div>
@@ -51,7 +51,7 @@ export default function AdminSettingsPage() {
       )}
 
       {/* Account & Security Card */}
-      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8 backdrop-blur-xl">
+      <div className="rounded-2xl border border-white/10 bg-[#111827] p-6 sm:p-8 shadow-sm">
         <div className="flex items-center gap-3 border-b border-white/10 pb-4 mb-6">
           <div className="grid h-9 w-9 place-items-center rounded-lg border border-copper-500/40 bg-copper-500/15 text-copper-400">
             <Lock size={18} />
@@ -122,30 +122,6 @@ export default function AdminSettingsPage() {
             <span>Update Password</span>
           </button>
         </form>
-      </div>
-
-      {/* System Information Card */}
-      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8 backdrop-blur-xl">
-        <div className="flex items-center gap-3 border-b border-white/10 pb-4 mb-6">
-          <div className="grid h-9 w-9 place-items-center rounded-lg border border-blue-500/40 bg-blue-500/15 text-blue-400">
-            <Database size={18} />
-          </div>
-          <div>
-            <h2 className="text-base font-bold text-white">Environment Details</h2>
-            <p className="text-xs text-steel-400">Active server connection and configuration</p>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 font-mono text-xs">
-          <div className="rounded-xl border border-white/5 bg-white/[0.01] p-3.5">
-            <div className="text-steel-400 text-[10px] uppercase">Node Environment</div>
-            <div className="mt-1 text-white font-semibold">{process.env.NODE_ENV || "development"}</div>
-          </div>
-          <div className="rounded-xl border border-white/5 bg-white/[0.01] p-3.5">
-            <div className="text-steel-400 text-[10px] uppercase">CMS Portal Status</div>
-            <div className="mt-1 text-emerald-400 font-semibold">Active & Secured</div>
-          </div>
-        </div>
       </div>
     </div>
   );

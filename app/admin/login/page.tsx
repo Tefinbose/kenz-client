@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -13,10 +13,9 @@ import {
   Loader2,
   AlertCircle,
   Building2,
-  Terminal,
 } from "lucide-react";
 
-export default function AdminLoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get("from") || "/admin";
@@ -86,13 +85,8 @@ export default function AdminLoginPage() {
       <div className="pointer-events-none absolute -right-40 bottom-1/4 h-[500px] w-[500px] rounded-full bg-blue-600/10 blur-[150px]" />
 
       <div className="relative sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Top Header Badge */}
+        {/* Top Header */}
         <div className="flex flex-col items-center text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-copper-500/30 bg-copper-500/10 px-4 py-1 font-mono text-xs font-semibold tracking-wider text-copper-300">
-            <Terminal size={13} className="text-copper-400" />
-            SECURE CMS // PORTAL-AUTH
-          </div>
-
           <div className="flex items-center gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-xl border border-copper-500/40 bg-gradient-to-br from-copper-500/20 to-copper-600/10 text-copper-400 shadow-lg shadow-copper-500/10">
               <Building2 size={24} />
@@ -101,17 +95,17 @@ export default function AdminLoginPage() {
               <span className="block font-display text-2xl font-bold tracking-wider text-white">
                 KENZ<span className="text-copper-400">ENGINEERING</span>
               </span>
-              <span className="block font-mono text-[10px] tracking-widest text-steel-400 uppercase">
-                Content Management System
+              <span className="block text-[11px] tracking-wider text-steel-400 uppercase font-medium">
+                Admin Panel
               </span>
             </div>
           </div>
 
-          <h2 className="mt-6 text-xl font-semibold tracking-tight text-white/90">
-            Admin Authentication
+          <h2 className="mt-7 text-xl font-semibold tracking-tight text-white">
+            Sign In to Admin
           </h2>
           <p className="mt-1 text-sm text-steel-400">
-            Sign in with verified administrator credentials
+            Enter your credentials to access the management portal
           </p>
         </div>
 
@@ -183,12 +177,11 @@ export default function AdminLoginPage() {
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  Verifying Credentials...
+                  Signing In...
                 </>
               ) : (
                 <>
-                  <ShieldCheck size={17} />
-                  Authorize & Sign In
+                  Sign In
                   <ArrowRight size={15} />
                 </>
               )}
@@ -228,5 +221,19 @@ export default function AdminLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-navy-950 text-xs font-semibold uppercase tracking-wider text-copper-400">
+          Loading authentication portal...
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }

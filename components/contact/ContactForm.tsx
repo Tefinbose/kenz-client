@@ -87,13 +87,36 @@ export default function ContactForm() {
     return Object.keys(next).length === 0;
   };
 
+  const [serverError, setServerError] = useState("");
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setServerError("");
     if (!validate()) return;
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLoading(false);
-    setSubmitted(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          fileName,
+          fileSize,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit inquiry");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : "Failed to send inquiry. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   /* ── SUCCESS STATE ─────────────────────────────────────── */
@@ -146,6 +169,12 @@ export default function ContactForm() {
       <p className="mt-1.5 text-sm text-steel-500">
         Fields marked with * are required.
       </p>
+
+      {serverError && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-semibold text-red-600">
+          {serverError}
+        </div>
+      )}
 
       {/* Contact details */}
       <div className="mt-8 grid gap-5 sm:grid-cols-2">

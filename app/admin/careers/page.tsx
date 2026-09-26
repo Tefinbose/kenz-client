@@ -18,7 +18,6 @@ import {
   Eye,
   EyeOff,
   ChevronDown,
-  Sparkles,
   Layers,
   ArrowUpRight,
   Filter,
@@ -77,7 +76,10 @@ export default function AdminCareersPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch("/api/admin/careers");
+      const res = await fetch(`/api/admin/careers?_t=${Date.now()}`, {
+        cache: "no-store",
+        headers: { "Cache-Control": "no-cache" },
+      });
       const data = await res.json();
       if (data.success) {
         setCareers(data.careers || []);
@@ -194,6 +196,15 @@ export default function AdminCareersPage() {
         throw new Error(data.error || "Failed to save career");
       }
 
+      // Immediately sync state with the returned document from DB
+      if (editingCareer) {
+        setCareers((prev) =>
+          prev.map((c) => (c._id === data.career?._id ? data.career : c))
+        );
+      } else if (data.career) {
+        setCareers((prev) => [data.career, ...prev]);
+      }
+
       setModalOpen(false);
       showToast(
         editingCareer
@@ -299,7 +310,7 @@ export default function AdminCareersPage() {
             <span>Recruitment & Talent Management</span>
           </div>
           <h1 className="mt-1 font-display text-3xl font-bold uppercase tracking-tight text-white">
-            Careers <span className="text-copper-400">& Job Openings</span>
+            Careers & Job Openings
           </h1>
           <p className="mt-1 text-sm text-steel-400">
             Publish engineering opportunities, structural detailing roles, and coordinate job openings.
@@ -317,25 +328,25 @@ export default function AdminCareersPage() {
 
       {/* ── METRIC TILES ── */}
       <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+        <div className="rounded-xl border border-white/10 bg-[#111827] p-4 shadow-sm">
           <div className="font-mono text-[10px] uppercase text-steel-400">Total Openings</div>
           <div className="text-2xl font-bold font-display text-white mt-1">{careers.length}</div>
         </div>
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+        <div className="rounded-xl border border-emerald-500/30 bg-[#111827] p-4 shadow-sm">
           <div className="font-mono text-[10px] uppercase text-emerald-400">Live / Published</div>
           <div className="text-2xl font-bold font-display text-emerald-300 mt-1">{activeCount}</div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+        <div className="rounded-xl border border-white/10 bg-[#111827] p-4 shadow-sm">
           <div className="font-mono text-[10px] uppercase text-steel-400">Drafts / Inactive</div>
           <div className="text-2xl font-bold font-display text-steel-300 mt-1">
             {careers.length - activeCount}
           </div>
         </div>
-        <div className="rounded-xl border border-copper-500/30 bg-copper-500/5 p-4">
-          <div className="font-mono text-[10px] uppercase text-copper-400">Public Visibility</div>
+        <div className="rounded-xl border border-copper-500/30 bg-[#111827] p-4 shadow-sm">
+          <div className="text-[11px] font-medium uppercase tracking-wider">Public Status</div>
           <div className="text-xs font-semibold text-copper-300 mt-2 flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-copper-400 animate-pulse" />
-            Live Sync Enabled
+            <span className="h-2 w-2 rounded-full " />
+            Visible on Careers Page
           </div>
         </div>
       </div>
@@ -349,7 +360,7 @@ export default function AdminCareersPage() {
             placeholder="Search roles by title, department, or location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2.5 pl-10 pr-4 text-xs text-white placeholder-steel-500 focus:border-copper-500/80 focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-[#111827] py-2.5 pl-10 pr-4 text-xs text-white placeholder-steel-500 focus:border-copper-500/80 focus:outline-none"
           />
         </div>
 
@@ -358,7 +369,7 @@ export default function AdminCareersPage() {
           <select
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
-            className="rounded-xl border border-white/10 bg-[#091122] px-3 py-2 text-xs text-steel-300 focus:border-copper-500/80 focus:outline-none"
+            className="rounded-xl border border-white/10 bg-[#111827] px-3 py-2 text-xs text-steel-300 focus:border-copper-500/80 focus:outline-none"
           >
             <option value="all">All Departments</option>
             {departments.map((d) => (
@@ -372,7 +383,7 @@ export default function AdminCareersPage() {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="rounded-xl border border-white/10 bg-[#091122] px-3 py-2 text-xs text-steel-300 focus:border-copper-500/80 focus:outline-none"
+            className="rounded-xl border border-white/10 bg-[#111827] px-3 py-2 text-xs text-steel-300 focus:border-copper-500/80 focus:outline-none"
           >
             <option value="all">All Status</option>
             <option value="active">Published</option>
@@ -385,10 +396,10 @@ export default function AdminCareersPage() {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <Loader2 size={24} className="animate-spin text-copper-400 mb-3" />
-          <span className="font-mono text-xs text-steel-400">Loading careers from MongoDB...</span>
+          <span className="font-mono text-xs text-steel-400">Loading career listings...</span>
         </div>
       ) : filteredCareers.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-12 text-center backdrop-blur-xl">
+        <div className="rounded-2xl border border-white/10 bg-[#111827] p-12 text-center shadow-sm">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-steel-500 mb-3">
             <Briefcase size={22} />
           </div>
@@ -416,7 +427,7 @@ export default function AdminCareersPage() {
           {filteredCareers.map((career) => (
             <div
               key={career._id}
-              className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition-all hover:border-copper-500/40 hover:bg-white/[0.04]"
+              className="group relative rounded-2xl border border-white/10 bg-[#111827] p-6 transition-all hover:border-copper-500/40 hover:bg-[#141e30] shadow-sm"
             >
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 {/* Left Role Info */}
@@ -452,11 +463,10 @@ export default function AdminCareersPage() {
                   {/* Publish Toggle Button */}
                   <button
                     onClick={() => handleToggleStatus(career)}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-xs font-semibold transition-all border ${
-                      career.isActive
-                        ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"
-                        : "border-white/10 bg-white/5 text-steel-400 hover:bg-white/10 hover:text-white"
-                    }`}
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-xs font-semibold transition-all border ${career.isActive
+                      ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"
+                      : "border-white/10 bg-white/5 text-steel-400 hover:bg-white/10 hover:text-white"
+                      }`}
                     title={career.isActive ? "Click to set as Draft" : "Click to Publish"}
                   >
                     {career.isActive ? (

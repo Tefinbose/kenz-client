@@ -11,7 +11,6 @@ import {
   Mail,
   Rocket,
   Shield,
-  Sparkles,
   Star,
   TrendingUp,
   Users,
@@ -30,8 +29,6 @@ import {
   ShimmerText,
   RevealText,
   CountUp,
-  GlitchText,
-  FloatingParticles,
   ScrollProgressBar,
 } from "@/components/ui/ReactBits";
 
@@ -182,12 +179,6 @@ export default function CareersPage() {
         <div className="pointer-events-none absolute -left-60 top-1/3 h-[600px] w-[600px] rounded-full bg-copper-500/10 blur-[160px]" />
         <div className="pointer-events-none absolute -right-40 bottom-0 h-[400px] w-[400px] rounded-full bg-copper-600/8 blur-[120px]" />
 
-        <FloatingParticles count={20} />
-
-        <div className="pointer-events-none absolute right-8 top-32 hidden font-mono text-[10px] tracking-[0.25em] text-white/20 lg:block">
-          CAD // KENZ-HR • CAR-001
-        </div>
-
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
 
@@ -198,16 +189,12 @@ export default function CareersPage() {
               transition={{ duration: 0.7 }}
             >
               <div className="mb-7 flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-copper-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-copper-500" />
-                  </span>
-                  04 / Careers
+                <div className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md">
+                  <span>04 / Careers</span>
                 </div>
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-copper-500/30 bg-copper-500/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-copper-300">
-                  <Sparkles size={11} className="text-copper-400" />
-                  We're Growing
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-copper-500/30 bg-copper-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-copper-300">
+                  <CheckCircle2 size={12} className="text-copper-400" />
+                  <span>We&apos;re Growing</span>
                 </div>
               </div>
 
@@ -252,18 +239,17 @@ export default function CareersPage() {
 
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-copper-400 animate-pulse" />
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-copper-400">Talent Portal</span>
+                  <span className="h-2 w-2 rounded-full bg-copper-400" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-copper-400">Careers & Opportunities</span>
                 </div>
-                <span className="font-mono text-[10px] text-white/40">KENZ-HR // 2026</span>
               </div>
 
               <div className="mt-6 flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-copper-500/30 bg-copper-500/15 text-copper-400">
-                  <BriefcaseBusiness size={22} className="animate-[pulse_3s_ease-in-out_infinite]" />
+                  <BriefcaseBusiness size={22} />
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-copper-400">Current Status</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-copper-400">Current Status</p>
                   <h3 className="mt-1 text-xl font-bold tracking-tight text-white">Accepting Applications</h3>
                   <p className="mt-2 text-xs leading-relaxed text-steel-400">
                     We're always interested in capable professionals across steel detailing disciplines.
@@ -484,7 +470,7 @@ export default function CareersPage() {
                     </div>
 
                     <h3 className="mt-6 font-display text-xl uppercase tracking-wide text-navy-950 transition-colors group-hover:text-copper-600">
-                      <GlitchText>{label}</GlitchText>
+                      {label}
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-steel-600">{desc}</p>
                   </SpotlightCard>
@@ -505,7 +491,6 @@ export default function CareersPage() {
           }}
         />
         <div className="pointer-events-none absolute -right-60 top-0 h-[500px] w-[500px] rounded-full bg-copper-600/10 blur-[160px]" />
-        <FloatingParticles count={14} />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
@@ -521,12 +506,12 @@ export default function CareersPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between border-b border-white/10 pb-4">
                     <div className="flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-copper-400 animate-pulse" />
-                      <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-copper-400">
-                        KENZ / LIVE OPENINGS ({openings.length})
+                      <span className="h-2 w-2 rounded-full bg-copper-400" />
+                      <span className="text-xs font-semibold uppercase tracking-wider text-copper-400">
+                        Current Openings ({openings.length})
                       </span>
                     </div>
-                    <span className="font-mono text-[10px] text-steel-400">
+                    <span className="text-xs text-steel-400">
                       Engineering Opportunities
                     </span>
                   </div>
@@ -650,7 +635,7 @@ export default function CareersPage() {
                   </div>
 
                   <h3 className="mt-5 font-display text-3xl uppercase tracking-tight text-white">
-                    <GlitchText>No Active Openings</GlitchText>
+                    No Active Openings
                   </h3>
                   <p className="mt-4 leading-relaxed text-steel-400">
                     We are not currently advertising specific openings, but we are always
@@ -680,9 +665,9 @@ export default function CareersPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-copper-400 backdrop-blur-md mb-8">
-                <Sparkles size={12} />
-                Common Questions
+              <div className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-copper-400 backdrop-blur-md mb-8">
+                <BriefcaseBusiness size={13} />
+                <span>Common Questions</span>
               </div>
 
               <div className="space-y-3">
@@ -741,7 +726,6 @@ export default function CareersPage() {
             backgroundSize: "60px 60px",
           }}
         />
-        <FloatingParticles count={12} />
         <div className="pointer-events-none absolute -right-40 bottom-0 h-[400px] w-[400px] rounded-full bg-black/10 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">

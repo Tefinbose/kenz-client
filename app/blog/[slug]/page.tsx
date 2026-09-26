@@ -5,7 +5,6 @@ import {
   Clock,
   Share2,
   Bookmark,
-  Sparkles,
   ArrowUpRight,
   CheckCircle2,
   Building2,
@@ -136,7 +135,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Post Footer Callout */}
               <div className="mt-14 rounded-2xl border border-copper-200 bg-copper-50/50 p-6 sm:p-8">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-copper-700">
-                  <Sparkles size={14} />
+                  <Building2 size={14} />
                   <span>Kenz Engineering LLC Detailing Support</span>
                 </div>
                 <p className="mt-2 text-sm text-steel-700 leading-relaxed">
