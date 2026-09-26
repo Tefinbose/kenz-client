@@ -1,7 +1,7 @@
 "use client";
 
-import ContactForm from "@/components/contact/ContactForm";
-import ContactFlipCards from "@/components/contact/ContactFlipCards";
+// import ContactForm from "@/components/contact/ContactForm";
+// import ContactFlipCards from "@/components/contact/ContactFlipCards";
 import {
   ArrowUpRight,
   ArrowDown,
@@ -40,9 +40,9 @@ export default function ContactPage() {
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: `
-              linear-gradient(#ffffff 1px, transparent 1px),
-              linear-gradient(90deg, #ffffff 1px, transparent 1px)
-            `,
+                linear-gradient(#ffffff 1px, transparent 1px),
+                linear-gradient(90deg, #ffffff 1px, transparent 1px)
+              `,
             backgroundSize: "60px 60px",
           }}
         />
@@ -181,7 +181,7 @@ export default function ContactPage() {
       {/* ── 3 ADVANCED 3D FLIP CONTACT CARDS ─────────────────── */}
       <section className="relative z-20 -mt-12 px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <ContactFlipCards />
+          {/* <ContactFlipCards /> */}
         </div>
       </section>
 
@@ -261,7 +261,7 @@ export default function ContactPage() {
             </motion.div>
 
             {/* RIGHT FORM CONSOLE */}
-            <ContactForm />
+            {/* <ContactForm/> */}
           </div>
         </div>
       </section>
