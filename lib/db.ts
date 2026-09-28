@@ -24,12 +24,16 @@ export async function connectDB() {
         throw new Error("Please define MONGODB_URI in .env.local");
     }
 
+    // Capture the narrowed value as a typed local so Next.js's TS checker
+    // doesn't re-widen it back to `string | undefined` at the call site.
+    const uri: string = MONGODB_URI;
+
     if (cached.conn) {
         return cached.conn;
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI, {
+        cached.promise = mongoose.connect(uri, {
             bufferCommands: false,
         });
     }
