@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -19,24 +19,253 @@ import {
   BarChart3,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 import {
   MagneticButton,
   TiltCard,
   SpotlightCard,
   ShimmerText,
   RevealText,
-  CountUp,
   ScrollProgressBar,
 } from "@/components/ui/ReactBits";
 
-/* ═══════════════════════════════════════════════ DATA ═══ */
+/* ═══════════════════════════════ 3D STEEL BUILDING ═══ */
 
-const stats = [
-  { value: 6, suffix: "+", label: "Disciplines" },
-  { value: 100, suffix: "%", label: "Accuracy" },
-  { value: 350, suffix: "+", label: "BIM LOD" },
-  { value: 24, suffix: "h", label: "SLA Response" },
+const CYCLE = 14;
+const HOLD_END = 10.5;
+const STEEL = "#9FB1C5";
+const COPPER = "#C17A3E";
+
+const ease = (x: number) => {
+  const c = Math.min(1, Math.max(0, x));
+  return c * c * (3 - 2 * c);
+};
+
+// Build in order, hold, then dismantle in reverse
+const stageProgress = (time: number, start: number, out: number) => {
+  const t = time % CYCLE;
+  if (t < HOLD_END) return ease((t - start) / 1.3);
+  return 1 - ease((t - HOLD_END - out * 0.45) / 0.8);
+};
+
+function Stage({
+  start,
+  out,
+  mode,
+  children,
+}: {
+  start: number;
+  out: number;
+  mode: "grow" | "drop";
+  children: React.ReactNode;
+}) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (!ref.current) return;
+    const p = stageProgress(state.clock.elapsedTime, start, out);
+    ref.current.visible = p > 0.001;
+    if (mode === "grow") ref.current.scale.y = Math.max(p, 0.001);
+    else ref.current.position.y = (1 - p) * 3;
+  });
+  return <group ref={ref}>{children}</group>;
+}
+
+// I-beam built from flanges + web, along local X
+function IBeam({
+  length,
+  position,
+  rotation = [0, 0, 0],
+}: {
+  length: number;
+  position: [number, number, number];
+  rotation?: [number, number, number];
+}) {
+  return (
+    <group position={position} rotation={rotation}>
+      <mesh position={[0, 0.07, 0]}>
+        <boxGeometry args={[length, 0.025, 0.12]} />
+        <meshStandardMaterial color={STEEL} metalness={0.8} roughness={0.35} />
+      </mesh>
+      <mesh position={[0, -0.07, 0]}>
+        <boxGeometry args={[length, 0.025, 0.12]} />
+        <meshStandardMaterial color={STEEL} metalness={0.8} roughness={0.35} />
+      </mesh>
+      <mesh>
+        <boxGeometry args={[length, 0.14, 0.025]} />
+        <meshStandardMaterial color={STEEL} metalness={0.8} roughness={0.35} />
+      </mesh>
+    </group>
+  );
+}
+
+const XS = [-1.6, 0, 1.6];
+const ZS = [-1.1, 1.1];
+const LEVELS_Y = [1.1, 2.15];
+
+function SteelBuilding() {
+  const rig = useRef<THREE.Group>(null);
+
+  useFrame((state, dt) => {
+    if (!rig.current) return;
+    rig.current.rotation.y += dt * 0.16;
+    rig.current.rotation.x = THREE.MathUtils.lerp(
+      rig.current.rotation.x,
+      -state.pointer.y * 0.1,
+      0.05
+    );
+  });
+
+  const braceLen = Math.hypot(1.6, 1.05);
+  const braceAng = Math.atan2(1.05, 1.6);
+  const stairLen = Math.hypot(1.44, 1.0);
+  const stairAng = Math.atan2(1.0, 1.44);
+
+  return (
+    <group ref={rig} position={[0, -1.5, 0]}>
+      <group position={[-0.8, 0, 0]}>
+        {/* Ground grid */}
+        <gridHelper args={[10, 20, "#C17A3E", "#1E2D40"]} position={[0.8, 0, 0]} />
+        <mesh position={[0.8, -0.03, 0]}>
+          <boxGeometry args={[6, 0.06, 3.4]} />
+          <meshStandardMaterial color="#16263A" metalness={0.5} roughness={0.6} />
+        </mesh>
+
+        {/* 1. Structural — columns + beams */}
+        <Stage start={0.3} out={5} mode="grow">
+          {XS.flatMap((x) =>
+            ZS.map((z) => (
+              <IBeam
+                key={`col-${x}-${z}`}
+                length={2.2}
+                position={[x, 1.1, z]}
+                rotation={[0, 0, Math.PI / 2]}
+              />
+            ))
+          )}
+        </Stage>
+
+        <Stage start={1.6} out={4} mode="drop">
+          {LEVELS_Y.flatMap((y) => [
+            ...ZS.flatMap((z) =>
+              [-0.8, 0.8].map((x) => (
+                <IBeam key={`bx-${y}-${z}-${x}`} length={1.6} position={[x, y, z]} />
+              ))
+            ),
+            ...XS.map((x) => (
+              <IBeam
+                key={`bz-${y}-${x}`}
+                length={2.2}
+                position={[x, y, 0]}
+                rotation={[0, Math.PI / 2, 0]}
+              />
+            )),
+          ])}
+        </Stage>
+
+        {/* Bracing */}
+        <Stage start={3.0} out={3} mode="drop">
+          {ZS.flatMap((z) =>
+            [1, -1].map((s) => (
+              <mesh
+                key={`br-${z}-${s}`}
+                position={[0.8, 1.625, z]}
+                rotation={[0, 0, s * braceAng]}
+              >
+                <boxGeometry args={[braceLen, 0.05, 0.05]} />
+                <meshStandardMaterial color={STEEL} metalness={0.8} roughness={0.4} />
+              </mesh>
+            ))
+          )}
+        </Stage>
+
+        {/* 2. Joist & deck */}
+        <Stage start={4.2} out={2} mode="drop">
+          {Array.from({ length: 7 }).map((_, i) => {
+            const z = -0.9 + i * 0.3;
+            return (
+              <group key={`j-${i}`} position={[0, 2.26, z]}>
+                <mesh position={[0, 0.05, 0]}>
+                  <boxGeometry args={[3.2, 0.02, 0.04]} />
+                  <meshStandardMaterial color="#C9D5E2" metalness={0.7} roughness={0.4} />
+                </mesh>
+                <mesh position={[0, -0.03, 0]}>
+                  <boxGeometry args={[3.2, 0.02, 0.04]} />
+                  <meshStandardMaterial color="#C9D5E2" metalness={0.7} roughness={0.4} />
+                </mesh>
+              </group>
+            );
+          })}
+          <mesh position={[0, 2.36, 0]}>
+            <boxGeometry args={[3.3, 0.02, 2.3]} />
+            <meshStandardMaterial color={COPPER} transparent opacity={0.4} />
+          </mesh>
+        </Stage>
+
+        {/* 3. Connections */}
+        <Stage start={6.0} out={1} mode="drop">
+          {XS.flatMap((x) =>
+            ZS.flatMap((z) =>
+              LEVELS_Y.map((y) => (
+                <mesh key={`p-${x}-${z}-${y}`} position={[x, y, z]}>
+                  <boxGeometry args={[0.24, 0.24, 0.05]} />
+                  <meshStandardMaterial
+                    color={COPPER}
+                    metalness={0.6}
+                    roughness={0.3}
+                    emissive={COPPER}
+                    emissiveIntensity={0.3}
+                  />
+                </mesh>
+              ))
+            )
+          )}
+        </Stage>
+
+        {/* 4. Miscellaneous steel — stair */}
+        <Stage start={7.4} out={0} mode="drop">
+          {[-0.35, 0.35].map((z) => (
+            <mesh
+              key={`str-${z}`}
+              position={[2.6, 0.62, z]}
+              rotation={[0, 0, stairAng]}
+            >
+              <boxGeometry args={[stairLen, 0.1, 0.04]} />
+              <meshStandardMaterial color={STEEL} metalness={0.8} roughness={0.4} />
+            </mesh>
+          ))}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <mesh key={`step-${i}`} position={[2.0 + i * 0.25, 0.18 + i * 0.18, 0]}>
+              <boxGeometry args={[0.24, 0.03, 0.72]} />
+              <meshStandardMaterial color={COPPER} metalness={0.5} roughness={0.4} />
+            </mesh>
+          ))}
+        </Stage>
+      </group>
+    </group>
+  );
+}
+
+function ProjectScene() {
+  return (
+    <Canvas camera={{ position: [6.8, 4.2, 7.2], fov: 38 }} dpr={[1, 2]}>
+      <fog attach="fog" args={["#0A1420", 10, 20]} />
+      <ambientLight intensity={0.55} />
+      <directionalLight position={[5, 8, 4]} intensity={1.4} />
+      <pointLight position={[-4, 3, -3]} intensity={30} color="#C17A3E" />
+      <SteelBuilding />
+    </Canvas>
+  );
+}
+
+const sceneTags = [
+  { label: "Structural", pos: "left-4 top-[20%]" },
+  { label: "Joist & Deck", pos: "right-4 top-[14%]" },
+  { label: "Connections", pos: "left-4 bottom-[30%]" },
+  { label: "Misc Steel", pos: "right-4 bottom-[26%]" },
 ];
+
+/* ═══════════════════════════════════════════════ DATA ═══ */
 
 const projectTypes = [
   {
@@ -137,6 +366,8 @@ const pillars = [
 
 export default function ProjectsPage() {
   const [activeStep, setActiveStep] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <main className="min-h-screen bg-[#fafbfc] overflow-hidden">
@@ -158,7 +389,7 @@ export default function ProjectsPage() {
         <div className="pointer-events-none absolute -right-60 bottom-0 h-[500px] w-[500px] rounded-full bg-copper-600/8 blur-[140px]" />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
 
             {/* Left */}
             <motion.div
@@ -207,51 +438,48 @@ export default function ProjectsPage() {
               </div>
             </motion.div>
 
-            {/* Right — Glassmorphic Cockpit */}
+            {/* Right — 3D steel building */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-7 shadow-[0_25px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl md:p-8"
+              className="relative h-[420px] overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent shadow-[0_25px_60px_rgba(0,0,0,0.45)] md:h-[540px]"
             >
               {/* CAD corners */}
-              <div className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l-2 border-t-2 border-copper-400/50" />
-              <div className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r-2 border-t-2 border-copper-400/50" />
-              <div className="pointer-events-none absolute bottom-3 left-3 h-3 w-3 border-b-2 border-l-2 border-copper-400/50" />
-              <div className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b-2 border-r-2 border-copper-400/50" />
+              <div className="pointer-events-none absolute left-3 top-3 z-10 h-3 w-3 border-l-2 border-t-2 border-copper-400/50" />
+              <div className="pointer-events-none absolute right-3 top-3 z-10 h-3 w-3 border-r-2 border-t-2 border-copper-400/50" />
+              <div className="pointer-events-none absolute bottom-3 left-3 z-10 h-3 w-3 border-b-2 border-l-2 border-copper-400/50" />
+              <div className="pointer-events-none absolute bottom-3 right-3 z-10 h-3 w-3 border-b-2 border-r-2 border-copper-400/50" />
 
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-copper-500/30 bg-copper-500/15 text-copper-400 shadow-inner">
-                  <Layers size={22} />
+              {mounted && (
+                <div className="absolute inset-0">
+                  <ProjectScene />
                 </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-copper-400">Active Disciplines</p>
-                  <h3 className="mt-1 text-xl font-bold tracking-tight text-white">6 Core Service Areas</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-steel-400">
-                    Full-cycle structural steel support from estimation to erection drawings.
-                  </p>
-                </div>
-              </div>
+              )}
 
-              {/* Metric grid */}
-              <div className="mt-7 grid grid-cols-2 gap-2.5 rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-                {stats.map((s) => (
-                  <div key={s.label} className="rounded-xl border border-white/5 bg-white/5 py-2.5">
-                    <p className="font-display text-xl text-copper-300 sm:text-2xl">
-                      <CountUp to={s.value} suffix={s.suffix} />
-                    </p>
-                    <p className="text-[9px] uppercase tracking-wider text-steel-400">{s.label}</p>
-                  </div>
-                ))}
-              </div>
+              {/* Floating labels */}
+              {sceneTags.map((t, i) => (
+                <motion.div
+                  key={t.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + i * 0.12 }}
+                  className={`pointer-events-none absolute z-10 flex items-center gap-2 rounded-lg border border-white/15 bg-navy-950/70 px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-white/85 backdrop-blur ${t.pos}`}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-copper-400" />
+                  {t.label}
+                </motion.div>
+              ))}
 
-              <Link
-                href="/contact"
-                className="group mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-copper-600 to-copper-500 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-copper-500/20 transition-all hover:scale-[1.02]"
-              >
-                Start a Project
-                <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-              </Link>
+              {/* Caption */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-navy-950 to-transparent px-6 pb-5 pt-16">
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-copper-400">
+                  KENZ / MODEL / LOD 350–400
+                </p>
+                <p className="mt-1 font-display text-lg uppercase text-white">
+                  From model to erection
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>

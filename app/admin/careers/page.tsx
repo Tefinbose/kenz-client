@@ -333,8 +333,8 @@ export default function AdminCareersPage() {
           <div className="text-2xl font-bold font-display text-white mt-1">{careers.length}</div>
         </div>
         <div className="rounded-xl border border-emerald-500/30 bg-[#111827] p-4 shadow-sm">
-          <div className="font-mono text-[10px] uppercase text-emerald-400">Live / Published</div>
-          <div className="text-2xl font-bold font-display text-emerald-300 mt-1">{activeCount}</div>
+          <div className="font-mono text-[10px] uppercase">Live / Published</div>
+          <div className="text-2xl font-bold font-display mt-1">{activeCount}</div>
         </div>
         <div className="rounded-xl border border-white/10 bg-[#111827] p-4 shadow-sm">
           <div className="font-mono text-[10px] uppercase text-steel-400">Drafts / Inactive</div>
@@ -464,14 +464,14 @@ export default function AdminCareersPage() {
                   <button
                     onClick={() => handleToggleStatus(career)}
                     className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-xs font-semibold transition-all border ${career.isActive
-                      ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"
+                      ? "border-emerald-500/40 bg-emerald-500/15 text-yellow-300 hover:bg-emerald-500/25"
                       : "border-white/10 bg-white/5 text-steel-400 hover:bg-white/10 hover:text-white"
                       }`}
                     title={career.isActive ? "Click to set as Draft" : "Click to Publish"}
                   >
                     {career.isActive ? (
                       <>
-                        <CheckCircle2 size={13} className="text-emerald-400" />
+                        <CheckCircle2 size={13} className="text-yellow-400" />
                         Published
                       </>
                     ) : (

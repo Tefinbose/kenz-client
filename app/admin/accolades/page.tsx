@@ -32,13 +32,13 @@ export default function AdminAccoladesPage() {
           </p>
         </div>
 
-        <button
+        {/* <button
           onClick={() => alert("Accolade editor will be connected in Phase 6 CRUD implementation.")}
           className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-copper-500 to-copper-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-copper-500/20 hover:from-copper-400 hover:to-copper-500 transition-all self-start sm:self-center"
         >
           <Plus size={16} />
           <span>Add Recognition / Endorsement</span>
-        </button>
+        </button> */}
       </div>
 
       {/* Accolades Placeholder */}
