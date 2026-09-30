@@ -31,274 +31,6 @@ import {
   ScrollProgressBar,
 } from "@/components/ui/ReactBits";
 
-/* ═══════════════════════════════ ANIMATED BLUEPRINT ═══ */
-
-const STEEL = "#9FB1C5";
-const COPPER = "#C17A3E";
-const COPPER_LIGHT = "#E0A263";
-
-const CYCLE = 14; // seconds for one full build + dismantle loop
-const DRAW = [0, 0, 1, 1, 0, 0];
-
-// Shared timeline: idle -> draw in at `s` -> hold -> undraw -> idle
-const cyc = (s: number, e = 0.09) => ({
-  times: [0, s, s + e, 0.8, 0.93, 1],
-  duration: CYCLE,
-  repeat: Infinity,
-  ease: "easeInOut" as const,
-});
-
-const COLS_X = [140, 300, 460];
-const GROUND_Y = 610;
-const LEVEL_Y = [500, 390, 280, 170];
-
-const towerPoints = Array.from({ length: 19 })
-  .map((_, i) => `${i % 2 === 0 ? 528 : 552},${610 - i * 30}`)
-  .join(" ");
-
-function CareerBlueprint() {
-  return (
-    <svg
-      viewBox="0 0 600 700"
-      preserveAspectRatio="xMidYMid meet"
-      className="h-full w-full"
-      role="img"
-      aria-label="Animated blueprint of a steel building frame being erected"
-    >
-      <defs>
-        <pattern id="bp-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-          <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" strokeOpacity="0.05" strokeWidth="1" />
-        </pattern>
-        <radialGradient id="bp-glow" cx="50%" cy="55%" r="55%">
-          <stop offset="0%" stopColor={COPPER} stopOpacity="0.22" />
-          <stop offset="100%" stopColor={COPPER} stopOpacity="0" />
-        </radialGradient>
-      </defs>
-
-      <rect width="600" height="700" fill="url(#bp-grid)" />
-      <rect width="600" height="700" fill="url(#bp-glow)" />
-
-      {/* Scan line */}
-      <motion.rect
-        x="0"
-        width="600"
-        height="2"
-        fill={COPPER}
-        opacity="0.3"
-        animate={{ y: [0, 700] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* Ground */}
-      <line x1="60" y1={GROUND_Y} x2="590" y2={GROUND_Y} stroke={STEEL} strokeWidth="2" strokeOpacity="0.6" />
-      {Array.from({ length: 27 }).map((_, i) => (
-        <line
-          key={`h-${i}`}
-          x1={64 + i * 20}
-          y1={GROUND_Y}
-          x2={54 + i * 20}
-          y2={GROUND_Y + 12}
-          stroke={STEEL}
-          strokeOpacity="0.25"
-          strokeWidth="1.5"
-        />
-      ))}
-
-      {/* ── Columns ── */}
-      {COLS_X.map((x, i) => (
-        <motion.line
-          key={`col-${x}`}
-          x1={x}
-          y1={GROUND_Y}
-          x2={x}
-          y2={LEVEL_Y[LEVEL_Y.length - 1]}
-          stroke={STEEL}
-          strokeWidth="6"
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: DRAW }}
-          transition={cyc(0.02 + i * 0.03)}
-        />
-      ))}
-
-      {/* ── Beams, one level at a time ── */}
-      {LEVEL_Y.map((y, li) => (
-        <motion.line
-          key={`beam-${y}`}
-          x1={COLS_X[0]}
-          y1={y}
-          x2={COLS_X[2]}
-          y2={y}
-          stroke={STEEL}
-          strokeWidth="5"
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: DRAW }}
-          transition={cyc(0.12 + li * 0.1)}
-        />
-      ))}
-
-      {/* ── Bracing ── */}
-      {[
-        [COLS_X[0], GROUND_Y, COLS_X[1], LEVEL_Y[0]],
-        [COLS_X[1], GROUND_Y, COLS_X[0], LEVEL_Y[0]],
-        [COLS_X[0], LEVEL_Y[0], COLS_X[1], LEVEL_Y[1]],
-        [COLS_X[1], LEVEL_Y[0], COLS_X[0], LEVEL_Y[1]],
-        [COLS_X[1], LEVEL_Y[1], COLS_X[2], LEVEL_Y[2]],
-        [COLS_X[2], LEVEL_Y[1], COLS_X[1], LEVEL_Y[2]],
-      ].map(([x1, y1, x2, y2], i) => (
-        <motion.line
-          key={`brace-${i}`}
-          x1={x1}
-          y1={y1}
-          x2={x2}
-          y2={y2}
-          stroke={STEEL}
-          strokeOpacity="0.7"
-          strokeWidth="2.5"
-          strokeDasharray="1"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: DRAW }}
-          transition={cyc(0.5 + i * 0.015)}
-        />
-      ))}
-
-      {/* ── Copper connection plates ── */}
-      {LEVEL_Y.flatMap((y, li) =>
-        COLS_X.map((x, ci) => (
-          <motion.rect
-            key={`plate-${li}-${ci}`}
-            x={x - 9}
-            y={y - 9}
-            width="18"
-            height="18"
-            rx="3"
-            fill={COPPER}
-            stroke={COPPER_LIGHT}
-            strokeWidth="1.5"
-            style={{ transformBox: "fill-box", transformOrigin: "center" }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: DRAW, opacity: DRAW }}
-            transition={cyc(0.2 + li * 0.1 + ci * 0.012, 0.05)}
-          />
-        ))
-      )}
-
-      {/* Pulsing beacon on the top joint */}
-      <motion.circle
-        cx={COLS_X[1]}
-        cy={LEVEL_Y[3]}
-        r="16"
-        fill="none"
-        stroke={COPPER_LIGHT}
-        strokeWidth="2"
-        style={{ transformBox: "fill-box", transformOrigin: "center" }}
-        animate={{ scale: [1, 2.2], opacity: [0.7, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-      />
-
-      {/* ── Tower crane ── */}
-      <motion.polyline
-        points={towerPoints}
-        fill="none"
-        stroke={STEEL}
-        strokeOpacity="0.8"
-        strokeWidth="2"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: DRAW }}
-        transition={cyc(0.0, 0.14)}
-      />
-      {[528, 552].map((x) => (
-        <motion.line
-          key={`tw-${x}`}
-          x1={x}
-          y1={GROUND_Y}
-          x2={x}
-          y2="70"
-          stroke={STEEL}
-          strokeWidth="3.5"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: DRAW }}
-          transition={cyc(0.0, 0.14)}
-        />
-      ))}
-      <motion.line
-        x1="330"
-        y1="70"
-        x2="590"
-        y2="70"
-        stroke={COPPER}
-        strokeWidth="5"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: DRAW }}
-        transition={cyc(0.1, 0.1)}
-      />
-      <motion.line
-        x1="540"
-        y1="70"
-        x2="540"
-        y2="40"
-        stroke={COPPER}
-        strokeWidth="4"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: DRAW }}
-        transition={cyc(0.14, 0.06)}
-      />
-
-      {/* Swaying hoisted beam */}
-      <motion.g
-        style={{ transformBox: "fill-box", transformOrigin: "50% 0%" }}
-        animate={{ rotate: [-4, 4, -4] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <line x1="400" y1="70" x2="400" y2="132" stroke={STEEL} strokeWidth="2" />
-        <line x1="400" y1="132" x2="370" y2="146" stroke={STEEL} strokeWidth="1.5" />
-        <line x1="400" y1="132" x2="430" y2="146" stroke={STEEL} strokeWidth="1.5" />
-        <rect x="358" y="146" width="84" height="10" rx="2" fill={COPPER} />
-        <rect x="358" y="141" width="84" height="5" rx="2" fill={COPPER_LIGHT} opacity="0.8" />
-      </motion.g>
-
-      {/* ── Dimension lines ── */}
-      <motion.g
-        animate={{ opacity: [0, 0, 1, 1, 0, 0] }}
-        transition={cyc(0.55, 0.08)}
-      >
-        <line x1="92" y1="170" x2="92" y2={GROUND_Y} stroke={COPPER_LIGHT} strokeWidth="1.5" />
-        <line x1="84" y1="170" x2="100" y2="170" stroke={COPPER_LIGHT} strokeWidth="1.5" />
-        <line x1="84" y1={GROUND_Y} x2="100" y2={GROUND_Y} stroke={COPPER_LIGHT} strokeWidth="1.5" />
-        <text
-          x="76"
-          y="395"
-          fill={COPPER_LIGHT}
-          fontSize="13"
-          fontFamily="ui-monospace, monospace"
-          textAnchor="middle"
-          transform="rotate(-90 76 395)"
-        >
-          44&apos;-0&quot;
-        </text>
-
-        <line x1="140" y1="652" x2="460" y2="652" stroke={COPPER_LIGHT} strokeWidth="1.5" />
-        <line x1="140" y1="644" x2="140" y2="660" stroke={COPPER_LIGHT} strokeWidth="1.5" />
-        <line x1="460" y1="644" x2="460" y2="660" stroke={COPPER_LIGHT} strokeWidth="1.5" />
-        <text
-          x="300"
-          y="678"
-          fill={COPPER_LIGHT}
-          fontSize="13"
-          fontFamily="ui-monospace, monospace"
-          textAnchor="middle"
-        >
-          32&apos;-0&quot; · LOD 350
-        </text>
-      </motion.g>
-    </svg>
-  );
-}
-
 /* ═══════════════════════════════════════════════ DATA ═══ */
 
 const floatTags = [
@@ -406,10 +138,7 @@ export default function CareersPage() {
               transition={{ duration: 0.7 }}
             >
               <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80 backdrop-blur">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C17A3E] opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C17A3E]" />
-                </span>
+                
                 Careers · We&apos;re Growing
               </div>
 
@@ -452,42 +181,56 @@ export default function CareersPage() {
               </div>
             </motion.div>
 
-            {/* Right — animated blueprint illustration */}
+            {/* Right — Professional Engineering Team & Career Feature */}
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative h-[420px] overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#122033] to-[#0A1420] shadow-[0_30px_80px_rgba(0,0,0,0.5)] md:h-[540px]"
+              className="group relative h-[440px] overflow-hidden rounded-[2.5rem] border border-white/15 bg-[#0A1420] shadow-[0_30px_90px_rgba(0,0,0,0.6)] md:h-[560px]"
             >
-              <div className="pointer-events-none absolute left-4 top-4 z-10 h-4 w-4 border-l-2 border-t-2 border-[#C17A3E]/70" />
-              <div className="pointer-events-none absolute right-4 top-4 z-10 h-4 w-4 border-r-2 border-t-2 border-[#C17A3E]/70" />
-              <div className="pointer-events-none absolute bottom-4 left-4 z-10 h-4 w-4 border-b-2 border-l-2 border-[#C17A3E]/70" />
-              <div className="pointer-events-none absolute bottom-4 right-4 z-10 h-4 w-4 border-b-2 border-r-2 border-[#C17A3E]/70" />
+              {/* Corner Engineering Framing Accents */}
+              <div className="pointer-events-none absolute left-4 top-4 z-20 h-4 w-4 border-l-2 border-t-2 border-[#C17A3E]" />
+              <div className="pointer-events-none absolute right-4 top-4 z-20 h-4 w-4 border-r-2 border-t-2 border-[#C17A3E]" />
+              <div className="pointer-events-none absolute bottom-4 left-4 z-20 h-4 w-4 border-b-2 border-l-2 border-[#C17A3E]" />
+              <div className="pointer-events-none absolute bottom-4 right-4 z-20 h-4 w-4 border-b-2 border-r-2 border-[#C17A3E]" />
 
-              <div className="absolute inset-0 px-4 pb-16 pt-6">
-                <CareerBlueprint />
-              </div>
+              {/* High-Quality Authentic Structural Engineering Team Image */}
+              <img
+                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1600&q=85"
+                alt="Kenz Engineering structural steel detailing and engineering team"
+                className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="eager"
+              />
 
-              {/* Floating labels */}
+              {/* Cinematic Vignette & Lighting Gradients */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0A1420] via-[#0A1420]/30 to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0A1420]/50 to-transparent" />
+
+              {/* Floating Culture & Capability Badges */}
               {floatTags.map((t, i) => (
                 <motion.div
                   key={t.label}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 + i * 0.12 }}
-                  className={`pointer-events-none absolute z-10 flex items-center gap-2 rounded-full border border-white/15 bg-[#0A1420]/70 px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-white/85 backdrop-blur ${t.pos}`}
+                  className={`pointer-events-none absolute z-10 flex items-center gap-2 rounded-full border border-white/20 bg-[#0A1420]/80 px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-white shadow-xl backdrop-blur-md ${t.pos}`}
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#C17A3E]" />
                   {t.label}
                 </motion.div>
               ))}
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#0A1420] to-transparent px-6 pb-5 pt-16">
-                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#C17A3E]">
-                  KENZ / CAREER / FRAME
+              {/* Bottom Caption Bar */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#0A1420] via-[#0A1420]/90 to-transparent px-7 pb-6 pt-20">
+                <div className="flex items-center gap-2">
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-[#C17A3E]">
+                    KENZ ENGINEERING / CAREER DESK
+                  </p>
+                </div>
+                <p className="mt-1 font-display text-xl uppercase font-bold text-white tracking-tight">
+                  Where Precision Meets Career Growth
                 </p>
-                <p className="mt-1 font-display text-lg uppercase text-white">
-                  Built level by level
+                <p className="mt-1 text-xs text-white/70 max-w-sm line-clamp-1">
+                  Structural steel detailers, Tekla modelers, and connection engineers.
                 </p>
               </div>
             </motion.div>
@@ -675,7 +418,6 @@ export default function CareersPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between border-b border-white/10 pb-4">
                     <div className="flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-[#C17A3E]" />
                       <span className="text-xs font-semibold uppercase tracking-wider text-[#C17A3E]">
                         Current Openings ({openings.length})
                       </span>
@@ -781,7 +523,6 @@ export default function CareersPage() {
                   className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.05] p-8 backdrop-blur-sm lg:p-10"
                 >
                   <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-[#C17A3E]" />
                     <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C17A3E]">
                       {loadingOpenings ? "KENZ / OPENINGS / LOADING" : "KENZ / OPENINGS / NOW"}
                     </span>
