@@ -32,6 +32,7 @@ export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [fileSize, setFileSize] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -60,8 +61,13 @@ export default function ContactForm() {
 
   const handleFileChange = (file?: File) => {
     if (file) {
+      setSelectedFile(file);
       setFileName(file.name);
       setFileSize(`${(file.size / (1024 * 1024)).toFixed(2)} MB`);
+    } else {
+      setSelectedFile(null);
+      setFileName("");
+      setFileSize("");
     }
   };
 
@@ -96,14 +102,22 @@ export default function ContactForm() {
     setLoading(true);
 
     try {
+      const fd = new FormData();
+      fd.append("name", formData.name);
+      fd.append("company", formData.company);
+      fd.append("email", formData.email);
+      fd.append("phone", formData.phone);
+      fd.append("projectName", formData.projectName);
+      fd.append("projectType", formData.projectType);
+      fd.append("service", formData.service);
+      fd.append("description", formData.description);
+      if (selectedFile) {
+        fd.append("file", selectedFile);
+      }
+
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          fileName,
-          fileSize,
-        }),
+        body: fd,
       });
 
       const data = await res.json();
@@ -137,6 +151,7 @@ export default function ContactForm() {
           type="button"
           onClick={() => {
             setSubmitted(false);
+            setSelectedFile(null);
             setFileName("");
             setFormData({
               name: "",
@@ -296,6 +311,7 @@ export default function ContactForm() {
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
+                  setSelectedFile(null);
                   setFileName("");
                   setFileSize("");
                 }}

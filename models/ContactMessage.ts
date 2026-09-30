@@ -11,6 +11,9 @@ export interface IContactMessage extends Document {
   description: string;
   fileName?: string;
   fileSize?: string;
+  fileUrl?: string;
+  fileType?: string;
+  fileData?: string; // Base64 data for resilient download/fallback
   status: "unread" | "read" | "replied" | "archived";
   notes?: string;
   createdAt: Date;
@@ -68,6 +71,17 @@ const ContactMessageSchema = new Schema<IContactMessage>(
       type: String,
       trim: true,
     },
+    fileUrl: {
+      type: String,
+      trim: true,
+    },
+    fileType: {
+      type: String,
+      trim: true,
+    },
+    fileData: {
+      type: String,
+    },
     status: {
       type: String,
       enum: ["unread", "read", "replied", "archived"],
@@ -85,6 +99,10 @@ const ContactMessageSchema = new Schema<IContactMessage>(
 );
 
 ContactMessageSchema.index({ status: 1, createdAt: -1 });
+
+if (process.env.NODE_ENV !== "production" && mongoose.models.ContactMessage) {
+  delete (mongoose.models as any).ContactMessage;
+}
 
 export const ContactMessage: Model<IContactMessage> =
   mongoose.models.ContactMessage ||

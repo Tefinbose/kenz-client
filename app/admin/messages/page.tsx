@@ -17,6 +17,8 @@ import {
   Building2,
   Calendar,
   Filter,
+  Download,
+  FileText,
 } from "lucide-react";
 
 interface ContactMessageItem {
@@ -31,6 +33,9 @@ interface ContactMessageItem {
   description: string;
   fileName?: string;
   fileSize?: string;
+  fileUrl?: string;
+  fileType?: string;
+  fileData?: string;
   status: "unread" | "read" | "replied" | "archived";
   notes?: string;
   createdAt: string;
@@ -507,17 +512,55 @@ export default function AdminMessagesPage() {
               {/* Attachment if present */}
               {selectedMessage.fileName && (
                 <div>
-                  <div className="text-[10px] uppercase text-steel-400 mb-1.5">
-                    Attached Drawing / Package
+                  <div className="flex items-center justify-between text-[10px] uppercase text-steel-400 mb-1.5">
+                    <span>Attached Drawing / Package</span>
+                    {selectedMessage.fileSize && (
+                      <span className="font-mono text-copper-400 text-[10px]">{selectedMessage.fileSize}</span>
+                    )}
                   </div>
-                  <div className="flex items-center justify-between rounded-lg border border-white/10 bg-[#111827] px-3.5 py-2.5">
-                    <div className="flex items-center gap-2.5">
-                      <Paperclip size={14} className="text-copper-400" />
-                      <div>
-                        <div className="font-medium text-white">{selectedMessage.fileName}</div>
-                        <div className="text-[10px] text-steel-400">{selectedMessage.fileSize || "Attachment"}</div>
+                  <div className="rounded-xl border border-white/10 bg-[#111827] p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 min-w-0">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-copper-500/10 border border-copper-500/20 text-copper-400">
+                          <FileText size={20} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-semibold text-white truncate text-sm" title={selectedMessage.fileName}>
+                            {selectedMessage.fileName}
+                          </div>
+                          <div className="text-[11px] text-steel-400 mt-0.5">
+                            {selectedMessage.fileSize || "Attached Drawing / Spec"}
+                          </div>
+                        </div>
                       </div>
                     </div>
+
+                    {/* Actions: Open and Download */}
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+                      <a
+                        href={selectedMessage.fileUrl || `/api/admin/messages/${selectedMessage._id}/download`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-xs font-semibold text-white hover:bg-white/20 transition-all text-center"
+                      >
+                        <ExternalLink size={13} className="text-copper-400" />
+                        <span>Open Document</span>
+                      </a>
+                      <a
+                        href={`/api/admin/messages/${selectedMessage._id}/download?download=true`}
+                        download={selectedMessage.fileName}
+                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-copper-500 px-3 py-2 text-xs font-semibold text-white hover:bg-copper-600 transition-all text-center shadow-lg shadow-copper-500/20"
+                      >
+                        <Download size={13} />
+                        <span>Download</span>
+                      </a>
+                    </div>
+
+                    {(!selectedMessage.fileUrl && !selectedMessage.fileData) && (
+                      <p className="text-[10px] text-amber-400/80 bg-amber-500/10 rounded p-1.5 border border-amber-500/20">
+                        Note: This older test submission was created prior to live storage integration. All new inquiry uploads include instant open & download.
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
