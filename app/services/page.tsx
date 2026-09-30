@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -203,14 +203,40 @@ const pillars = [
   },
 ];
 
+const iconMap: Record<string, typeof Ruler> = {
+  Ruler,
+  Box,
+  Cable,
+  Layers3,
+  ScanLine,
+  Calculator,
+};
+
 export default function ServicesPage() {
+  const [servicesList, setServicesList] = useState(services);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
   const [openService, setOpenService] = useState<string>("01");
 
+  useEffect(() => {
+    let isMounted = true;
+    fetch(`/api/services?_t=${Date.now()}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (isMounted && json.success && Array.isArray(json.services) && json.services.length > 0) {
+          setServicesList(json.services);
+        }
+      })
+      .catch((err) => console.warn("Using default services:", err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const filteredServices =
     activeCategory === "all"
-      ? services
-      : services.filter((s) => s.category === activeCategory);
+      ? servicesList
+      : servicesList.filter((s) => s.category === activeCategory);
 
   return (
     <main className="min-h-screen bg-[#fafbfc] text-ink">
@@ -363,12 +389,15 @@ export default function ServicesPage() {
           {/* Index list */}
           <div className="mt-12 divide-y divide-steel-200 border-y border-steel-200">
             <AnimatePresence initial={false}>
-              {filteredServices.map((service) => {
-                const Icon = service.icon;
+              {filteredServices.map((service, sIndex) => {
+                const Icon =
+                  typeof service.icon === "string"
+                    ? iconMap[service.icon] || Ruler
+                    : service.icon || Ruler;
                 const isOpen = openService === service.number;
                 return (
                   <div
-                    key={service.number}
+                    key={service.code || service.number || (service as any)._id || `service-${sIndex}`}
                     id={service.href.split("/").pop()}
                     className="scroll-mt-32"
                   >

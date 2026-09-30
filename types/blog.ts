@@ -17,4 +17,6 @@ export interface BlogPost {
   };
   introParagraphs: string[];
   sections: BlogSection[];
+  coverImage?: string;
+  featured?: boolean;
 }

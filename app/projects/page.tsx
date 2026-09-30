@@ -362,12 +362,47 @@ const pillars = [
   { icon: BarChart3, label: "Delivery", desc: "Consistent on-time deliverables through clear milestones." },
 ];
 
+const iconMap: Record<string, typeof Ruler> = {
+  Ruler,
+  Box,
+  Cable,
+  Layers3,
+  ScanLine,
+  Calculator,
+  Layers,
+};
+
 /* ═══════════════════════════════════════════════ PAGE ═══ */
 
 export default function ProjectsPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [projectList, setProjectList] = useState(projectTypes);
+
+  useEffect(() => {
+    setMounted(true);
+    let isMounted = true;
+    fetch(`/api/projects?_t=${Date.now()}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (isMounted && json.success && Array.isArray(json.projects) && json.projects.length > 0) {
+          const mapped = json.projects.map((p: any) => ({
+            number: p.number || "01",
+            icon: p.icon || "Ruler",
+            title: p.title,
+            desc: p.description || p.desc,
+            tag: p.tag || p.category,
+            href: p.href || "/services",
+          }));
+          setProjectList(mapped);
+        }
+      })
+      .catch((err) => console.warn("Using default project types:", err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#fafbfc] overflow-hidden">
@@ -659,11 +694,14 @@ export default function ProjectsPage() {
           </motion.div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {projectTypes.map((item, i) => {
-              const Icon = item.icon;
+            {projectList.map((item, i) => {
+              const Icon =
+                typeof item.icon === "string"
+                  ? iconMap[item.icon] || Ruler
+                  : item.icon || Ruler;
               return (
                 <motion.div
-                  key={item.number}
+                  key={item.number || item.title || (item as any)._id || `project-${i}`}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}

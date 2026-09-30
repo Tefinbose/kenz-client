@@ -11,6 +11,8 @@ import {
   FileText,
   ChevronRight,
 } from "lucide-react";
+import { connectDB } from "@/lib/db";
+import { Blog } from "@/models";
 import { blogPosts, getBlogPostBySlug } from "@/data/blogData";
 
 interface BlogPostPageProps {
@@ -27,7 +29,31 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  let post = await getBlogPostBySlug(slug);
+
+  if (!post) {
+    try {
+      await connectDB();
+      const dbPost = await Blog.findOne({ slug }).lean();
+      if (dbPost) {
+        post = {
+          id: dbPost._id?.toString() || dbPost.slug,
+          slug: dbPost.slug,
+          title: dbPost.title,
+          excerpt: dbPost.excerpt,
+          date: dbPost.date,
+          readTime: dbPost.readTime,
+          category: dbPost.category,
+          author: dbPost.author,
+          introParagraphs: dbPost.introParagraphs || [],
+          sections: dbPost.sections || [],
+          coverImage: dbPost.coverImage,
+        };
+      }
+    } catch (e) {
+      console.warn("DB query in BlogPostPage error:", e);
+    }
+  }
 
   if (!post) {
     notFound();

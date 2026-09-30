@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   BookOpen,
@@ -25,12 +25,29 @@ const categoryIcons: Record<string, typeof Layers> = {
 };
 
 export default function BlogPage() {
+  const [posts, setPosts] = useState(blogPosts);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  useEffect(() => {
+    let isMounted = true;
+    fetch(`/api/blog?_t=${Date.now()}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (isMounted && json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setPosts(json.data);
+        }
+      })
+      .catch((err) => console.warn("Using default blog posts:", err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const categories = ["All", "Steel Detailing", "BIM Support", "Joist & Deck", "Estimation"];
 
-  const filteredPosts = blogPosts.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     const matchesCategory =
       selectedCategory === "All" || post.category === selectedCategory;
     const matchesSearch =
@@ -144,7 +161,7 @@ export default function BlogPage() {
 
                 return (
                   <motion.article
-                    key={post.id}
+                    key={post.slug || post.id || `blog-post-${idx}`}
                     layout
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
