@@ -20,6 +20,7 @@ import {
   Download,
   FileText,
 } from "lucide-react";
+import DocumentViewerModal from "@/components/admin/DocumentViewerModal";
 
 interface ContactMessageItem {
   _id: string;
@@ -68,6 +69,13 @@ export default function AdminMessagesPage() {
   const [adminNotes, setAdminNotes] = useState("");
   const [savingNotes, setSavingNotes] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [viewingDocument, setViewingDocument] = useState<{
+    fileUrl: string;
+    fileName: string;
+    fileSize?: string;
+    fileType?: string;
+    downloadUrl?: string;
+  } | null>(null);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -535,17 +543,24 @@ export default function AdminMessagesPage() {
                       </div>
                     </div>
 
-                    {/* Actions: Open and Download */}
+                    {/* Actions: Open (In-Browser Viewer) and Download */}
                     <div className="flex items-center gap-2 pt-2 border-t border-white/5">
-                      <a
-                        href={selectedMessage.fileUrl || `/api/admin/messages/${selectedMessage._id}/download`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-xs font-semibold text-white hover:bg-white/20 transition-all text-center"
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setViewingDocument({
+                            fileUrl: selectedMessage.fileUrl || `/api/admin/messages/${selectedMessage._id}/download`,
+                            fileName: selectedMessage.fileName || "document",
+                            fileSize: selectedMessage.fileSize,
+                            fileType: selectedMessage.fileType,
+                            downloadUrl: `/api/admin/messages/${selectedMessage._id}/download?download=true`,
+                          })
+                        }
+                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-white/10 hover:bg-white/20 px-3 py-2 text-xs font-semibold text-white transition-all text-center cursor-pointer group/btn"
                       >
-                        <ExternalLink size={13} className="text-copper-400" />
+                        <Eye size={13} className="text-copper-400 group-hover/btn:scale-110 transition-transform" />
                         <span>Open Document</span>
-                      </a>
+                      </button>
                       <a
                         href={`/api/admin/messages/${selectedMessage._id}/download?download=true`}
                         download={selectedMessage.fileName}
@@ -663,6 +678,19 @@ export default function AdminMessagesPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Interactive In-Browser Document Preview Modal */}
+      {viewingDocument && (
+        <DocumentViewerModal
+          isOpen={!!viewingDocument}
+          onClose={() => setViewingDocument(null)}
+          fileUrl={viewingDocument.fileUrl}
+          fileName={viewingDocument.fileName}
+          fileSize={viewingDocument.fileSize}
+          fileType={viewingDocument.fileType}
+          downloadUrl={viewingDocument.downloadUrl}
+        />
       )}
     </div>
   );

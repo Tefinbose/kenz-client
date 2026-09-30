@@ -248,10 +248,31 @@ export default function DocumentViewerModal({
 
           {/* 1. Word Document Preview Container */}
           {isDocx && !error && (
-            <div className="mx-auto max-w-4xl py-4">
+            <div className="mx-auto max-w-4xl py-4 flex flex-col items-center w-full">
+              <style>{`
+                .docx-render-container-wrapper {
+                  background: transparent !important;
+                  padding: 0 !important;
+                  display: flex !important;
+                  flex-direction: column !important;
+                  align-items: center !important;
+                  width: 100% !important;
+                }
+                .docx-render-container-wrapper > section.docx-render-container {
+                  background: #ffffff !important;
+                  color: #111827 !important;
+                  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+                  border-radius: 8px !important;
+                  margin-bottom: 24px !important;
+                  max-width: 100% !important;
+                }
+                .docx-render-container table {
+                  border-collapse: collapse !important;
+                }
+              `}</style>
               <div
                 ref={containerRef}
-                className="docx-viewer-content rounded-xl bg-white shadow-2xl p-6 sm:p-12 text-gray-900 min-h-[600px] overflow-x-auto"
+                className="docx-viewer-content w-full flex flex-col items-center min-h-[400px]"
                 style={{
                   fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
                 }}
