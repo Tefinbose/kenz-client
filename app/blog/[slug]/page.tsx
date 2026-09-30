@@ -130,7 +130,27 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_320px] lg:items-start">
             {/* Left Column: Full Content */}
-            <article className="rounded-3xl border border-steel-200/90 bg-white p-8 sm:p-12 md:p-16 shadow-sm">
+            <article className="rounded-3xl border border-steel-200/90 bg-white p-8 sm:p-12 md:p-16 shadow-sm overflow-hidden">
+              {/* Featured Cover Image */}
+              {post.coverImage && (
+                <div className="relative -mx-8 -mt-8 sm:-mx-12 sm:-mt-12 md:-mx-16 md:-mt-16 mb-10 overflow-hidden bg-navy-950 border-b border-steel-200/90">
+                  <img
+                    src={post.coverImage}
+                    alt={post.title}
+                    className="h-64 sm:h-80 md:h-[420px] w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between text-xs text-white/90">
+                    <span className="rounded-md bg-navy-950/80 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-copper-300 backdrop-blur-md">
+                      {post.category} Detailing & Engineering
+                    </span>
+                    <span className="hidden sm:inline-block text-[11px] text-steel-200">
+                      Kenz Engineering Knowledge Base
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Intro Lead Paragraphs */}
               <div className="space-y-5 text-base sm:text-lg leading-relaxed text-steel-700 font-normal border-b border-steel-100 pb-10">
                 {post.introParagraphs.map((para, i) => (
@@ -257,29 +277,42 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {otherPosts.map((other) => (
               <div
                 key={other.id}
-                className="group flex flex-col justify-between rounded-2xl border border-steel-200/90 bg-white p-6 shadow-sm transition-all hover:border-copper-300 hover:shadow-md"
+                className="group flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-steel-200/90 bg-white shadow-sm transition-all hover:border-copper-300 hover:shadow-md"
               >
-                <div>
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-copper-600">
-                    {other.category} • {other.readTime}
-                  </span>
-                  <h4 className="mt-3 font-display text-xl font-bold uppercase tracking-tight text-navy-950 group-hover:text-copper-600 transition-colors">
-                    <Link href={`/blog/${other.slug}`}>
-                      {other.title}
+                {other.coverImage && (
+                  <div className="relative h-44 sm:h-auto sm:w-48 shrink-0 overflow-hidden bg-navy-950">
+                    <img
+                      src={other.coverImage}
+                      alt={other.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-navy-950/20" />
+                  </div>
+                )}
+                <div className="flex flex-1 flex-col justify-between p-6">
+                  <div>
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-copper-600">
+                      {other.category} • {other.readTime}
+                    </span>
+                    <h4 className="mt-2 font-display text-lg font-bold uppercase tracking-tight text-navy-950 group-hover:text-copper-600 transition-colors line-clamp-2">
+                      <Link href={`/blog/${other.slug}`}>
+                        {other.title}
+                      </Link>
+                    </h4>
+                    <p className="mt-2 text-xs text-steel-600 leading-relaxed line-clamp-2">
+                      {other.excerpt}
+                    </p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-steel-100 flex justify-end">
+                    <Link
+                      href={`/blog/${other.slug}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy-950 group-hover:text-copper-600"
+                    >
+                      <span>Read</span>
+                      <ArrowUpRight size={13} />
                     </Link>
-                  </h4>
-                  <p className="mt-2 text-xs text-steel-600 leading-relaxed line-clamp-2">
-                    {other.excerpt}
-                  </p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-steel-100 flex justify-end">
-                  <Link
-                    href={`/blog/${other.slug}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy-950 group-hover:text-copper-600"
-                  >
-                    <span>Read</span>
-                    <ArrowUpRight size={13} />
-                  </Link>
+                  </div>
                 </div>
               </div>
             ))}

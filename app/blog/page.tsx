@@ -167,51 +167,76 @@ export default function BlogPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.4, delay: idx * 0.08 }}
-                    className="group flex flex-col justify-between rounded-3xl border border-steel-200/90 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-copper-300 hover:shadow-xl hover:shadow-copper-500/10"
+                    className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-steel-200/90 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-copper-300 hover:shadow-xl hover:shadow-copper-500/10"
                   >
                     <div>
-                      {/* Meta Header */}
-                      <div className="flex items-center justify-between">
-                        <div className="inline-flex items-center gap-1.5 rounded-full border border-copper-200/80 bg-copper-50/80 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-copper-700">
-                          <IconComponent size={12} className="text-copper-600" />
-                          <span>{post.category}</span>
+                      {/* Card Media Banner */}
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="relative block h-56 sm:h-60 w-full overflow-hidden bg-navy-950"
+                      >
+                        {post.coverImage ? (
+                          <img
+                            src={post.coverImage}
+                            alt={post.title}
+                            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-navy-950 to-navy-900 text-copper-400">
+                            <IconComponent size={44} className="opacity-40" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/25 to-transparent" />
+                        
+                        {/* Overlay Badges */}
+                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                          <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-navy-950/75 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md">
+                            <IconComponent size={12} className="text-copper-400" />
+                            <span>{post.category}</span>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 rounded-full bg-navy-950/75 border border-white/10 px-2.5 py-1 text-xs text-steel-200 backdrop-blur-md">
+                            <Clock size={12} className="text-copper-400" />
+                            <span>{post.readTime}</span>
+                          </div>
                         </div>
+                      </Link>
 
-                        <div className="flex items-center gap-1.5 text-xs text-steel-400">
-                          <Clock size={13} />
-                          <span>{post.readTime}</span>
-                        </div>
-                      </div>
+                      {/* Card Body Content */}
+                      <div className="p-7 sm:p-8">
+                        {/* Title */}
+                        <h2 className="font-display text-2xl font-bold uppercase tracking-tight text-navy-950 transition-colors group-hover:text-copper-600 sm:text-3xl leading-snug">
+                          <Link href={`/blog/${post.slug}`}>
+                            {post.title}
+                          </Link>
+                        </h2>
 
-                      {/* Title */}
-                      <h2 className="mt-5 font-display text-2xl font-bold uppercase tracking-tight text-navy-950 transition-colors group-hover:text-copper-600 sm:text-3xl leading-snug">
-                        <Link href={`/blog/${post.slug}`}>
-                          {post.title}
-                        </Link>
-                      </h2>
+                        {/* Excerpt */}
+                        <p className="mt-4 text-sm leading-relaxed text-steel-600 line-clamp-3">
+                          {post.excerpt}
+                        </p>
 
-                      {/* Excerpt */}
-                      <p className="mt-4 text-sm leading-relaxed text-steel-600">
-                        {post.excerpt}
-                      </p>
-
-                      {/* Section Preview Tags */}
-                      <div className="mt-6 flex flex-wrap gap-2 border-t border-steel-100 pt-4">
-                        {post.sections.map((sec, sIdx) => (
-                          sec.heading && (
-                            <span
-                              key={sIdx}
-                              className="rounded-lg bg-steel-50 px-2.5 py-1 text-[11px] font-medium text-steel-600"
-                            >
-                              {sec.heading}
-                            </span>
-                          )
-                        ))}
+                        {/* Section Preview Tags */}
+                        {post.sections && post.sections.length > 0 && (
+                          <div className="mt-6 flex flex-wrap gap-2 border-t border-steel-100 pt-4">
+                            {post.sections.map((sec, sIdx) => (
+                              sec.heading && (
+                                <span
+                                  key={sIdx}
+                                  className="rounded-lg bg-steel-50 px-2.5 py-1 text-[11px] font-medium text-steel-600"
+                                >
+                                  {sec.heading}
+                                </span>
+                              )
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     {/* Bottom Action Footer */}
-                    <div className="mt-8 flex items-center justify-between border-t border-steel-100 pt-5">
+                    <div className="mx-7 sm:mx-8 mb-7 sm:mb-8 flex items-center justify-between border-t border-steel-100 pt-5">
                       <div>
                         <p className="text-xs font-bold text-navy-950">
                           {post.author.name}

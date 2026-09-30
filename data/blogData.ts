@@ -10,6 +10,8 @@ export const blogPosts: BlogPost[] = [
     date: "March 2026",
     readTime: "4 min read",
     category: "Steel Detailing",
+    coverImage:
+      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1400&q=80",
     author: {
       name: "Kenz Engineering LLC",
       role: "Structural Detailing Team",
@@ -52,6 +54,8 @@ export const blogPosts: BlogPost[] = [
     date: "March 2026",
     readTime: "4 min read",
     category: "BIM Support",
+    coverImage:
+      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=80",
     author: {
       name: "Kenz Engineering LLC",
       role: "BIM Coordination Desk",
@@ -101,6 +105,8 @@ export const blogPosts: BlogPost[] = [
     date: "February 2026",
     readTime: "4 min read",
     category: "Joist & Deck",
+    coverImage:
+      "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1400&q=80",
     author: {
       name: "Kenz Engineering LLC",
       role: "Specialty Detailing Group",
@@ -151,6 +157,8 @@ export const blogPosts: BlogPost[] = [
     date: "February 2026",
     readTime: "4 min read",
     category: "Estimation",
+    coverImage:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1400&q=80",
     author: {
       name: "Kenz Engineering LLC",
       role: "Material Estimation Desk",

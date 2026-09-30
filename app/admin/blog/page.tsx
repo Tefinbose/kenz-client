@@ -73,6 +73,7 @@ export default function AdminBlogPage() {
     authorRole: "Structural Detailing Team",
     excerpt: "",
     introText: "", // Joined by newlines for easy editing
+    coverImage: "",
     sections: [
       { heading: "From Design Intent to Fabrication", paragraphsText: "" },
     ],
@@ -128,6 +129,7 @@ export default function AdminBlogPage() {
       authorRole: "Structural Detailing Team",
       excerpt: "",
       introText: "",
+      coverImage: "",
       sections: [{ heading: "Key Technical Considerations", paragraphsText: "" }],
       isPublished: true,
       featured: false,
@@ -146,6 +148,7 @@ export default function AdminBlogPage() {
       authorRole: post.author?.role || "Engineering Team",
       excerpt: post.excerpt,
       introText: (post.introParagraphs || []).join("\n\n"),
+      coverImage: post.coverImage || "",
       sections: (post.sections || []).map((s) => ({
         heading: s.heading || "",
         paragraphsText: (s.paragraphs || []).join("\n\n"),
@@ -187,6 +190,7 @@ export default function AdminBlogPage() {
         },
         introParagraphs,
         sections,
+        coverImage: formData.coverImage.trim() || undefined,
         isPublished: formData.isPublished,
         featured: formData.featured,
       };
@@ -444,16 +448,32 @@ export default function AdminBlogPage() {
                 {filteredPosts.map((post) => (
                   <tr key={post._id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-4 px-4 max-w-sm">
-                      <div className="flex items-start gap-2.5">
+                      <div className="flex items-start gap-3">
                         <button
                           onClick={() => handleToggleFeatured(post)}
                           title={post.featured ? "Featured article" : "Mark as featured"}
-                          className={`mt-0.5 shrink-0 ${
+                          className={`mt-1 shrink-0 ${
                             post.featured ? "text-copper-400" : "text-steel-600 hover:text-copper-400"
                           }`}
                         >
                           <Star size={15} fill={post.featured ? "currentColor" : "none"} />
                         </button>
+
+                        {/* Thumbnail */}
+                        <div className="h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-white/5 border border-white/10">
+                          {post.coverImage ? (
+                            <img
+                              src={post.coverImage}
+                              alt={post.title}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-[9px] font-mono text-steel-500 uppercase">
+                              No Img
+                            </div>
+                          )}
+                        </div>
+
                         <div>
                           <p className="font-semibold text-white hover:text-copper-300 transition-colors line-clamp-1">
                             {post.title}
@@ -558,6 +578,109 @@ export default function AdminBlogPage() {
                   placeholder="e.g. Why Accurate Structural Steel Detailing Matters in Modern Construction"
                   className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-white focus:border-copper-500 focus:outline-none"
                 />
+              </div>
+
+              {/* Cover Image Input with Live Preview & Presets */}
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-steel-300">
+                    Cover Image URL
+                  </label>
+                  <span className="text-[11px] text-steel-400">Direct image link (Unsplash, CDN, or URL)</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    type="url"
+                    value={formData.coverImage}
+                    onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
+                    placeholder="https://images.unsplash.com/photo-..."
+                    className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-white focus:border-copper-500 focus:outline-none"
+                  />
+                  {formData.coverImage && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, coverImage: "" })}
+                      className="text-xs text-red-400 hover:underline shrink-0"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+
+                {/* Preset Suggestions */}
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <span className="text-[10px] uppercase font-bold text-copper-400">Quick Presets:</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        coverImage:
+                          "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1400&q=80",
+                      })
+                    }
+                    className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-steel-300 hover:border-copper-500 hover:text-white transition-all"
+                  >
+                    Steel Detailing
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        coverImage:
+                          "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=80",
+                      })
+                    }
+                    className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-steel-300 hover:border-copper-500 hover:text-white transition-all"
+                  >
+                    BIM & Blueprint
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        coverImage:
+                          "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1400&q=80",
+                      })
+                    }
+                    className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-steel-300 hover:border-copper-500 hover:text-white transition-all"
+                  >
+                    Joist & Deck
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        coverImage:
+                          "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1400&q=80",
+                      })
+                    }
+                    className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-steel-300 hover:border-copper-500 hover:text-white transition-all"
+                  >
+                    Estimation & Fabrication
+                  </button>
+                </div>
+
+                {/* Live Preview */}
+                {formData.coverImage && (
+                  <div className="relative mt-2 h-36 w-full overflow-hidden rounded-xl border border-white/15 bg-black/40">
+                    <img
+                      src={formData.coverImage}
+                      alt="Cover Preview"
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                      }}
+                    />
+                    <div className="absolute bottom-2 left-2 rounded bg-black/70 px-2 py-0.5 text-[10px] font-mono text-steel-200">
+                      Live Preview
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
