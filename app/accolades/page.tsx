@@ -201,41 +201,7 @@ export default function AccoladesPage() {
         <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-copper-500/60 to-transparent" />
       </section>
 
-      {/* ── 2. METRICS STRIP ────────────────────────────────────────────── */}
-      <section className="relative z-20 -mt-10 px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {data.metrics.map((metric, i) => (
-              <motion.div
-                key={metric.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="relative overflow-hidden rounded-2xl border border-steel-200/90 bg-white p-6 shadow-lg shadow-steel-200/40 transition-all hover:-translate-y-1 hover:border-copper-300 hover:shadow-xl"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-copper-600">
-                    {metric.badge}
-                  </span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-copper-500" />
-                </div>
-                <p className="mt-3 font-display text-3xl font-bold tracking-tight text-navy-950 sm:text-4xl">
-                  {metric.value}
-                </p>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-steel-700">
-                  {metric.label}
-                </p>
-                <p className="mt-2 text-xs leading-relaxed text-steel-500">
-                  {metric.subtext}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 3. RECOGNITION & ACHIEVEMENT SECTION ───────────────────────── */}
+      {/* ── 2. RECOGNITION & ACHIEVEMENT SECTION ───────────────────────── */}
       <section id="recognition-section" className="py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           {/* Section Header */}
