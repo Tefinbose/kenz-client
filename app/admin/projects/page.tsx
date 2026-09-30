@@ -35,14 +35,14 @@ export default function AdminProjectsPage() {
             Showcase structural detailing, BIM LOD 350-400, connection, and miscellaneous steel deliverables.
           </p>
         </div>
-{/* 
+
         <button
-          onClick={() => alert("Project modal will be connected in Phase 6 CRUD implementation.")}
+          onClick={() => alert("Project ")}
           className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-copper-500 to-copper-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-copper-500/20 hover:from-copper-400 hover:to-copper-500 transition-all self-start sm:self-center"
         >
           <Plus size={16} />
           <span>Add New Project</span>
-        </button> */}
+        </button>
       </div>
 
       {/* Filter / Search Bar */}
@@ -61,13 +61,13 @@ export default function AdminProjectsPage() {
 
       {/* Projects Table Placeholder */}
       <div className="rounded-2xl border border-white/10 bg-[#111827] p-8 text-center shadow-sm">
-        {/* <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-copper-400 mb-3">
+        <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-copper-400 mb-3">
           <FolderGit2 size={24} />
-        </div> */}
-        {/* <h3 className="text-base font-semibold text-white">Project Records Ready</h3>
+        </div>
+        <h3 className="text-base font-semibold text-white">Project Records Ready</h3>
         <p className="mt-1 text-xs text-steel-400 max-w-md mx-auto">
           Database model <code className="text-copper-400 font-mono">Project</code> is initialized. Use the upcoming data migration to populate projects from existing static data or create new records.
-        </p> */}
+        </p>
       </div>
     </div>
   );
