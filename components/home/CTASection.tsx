@@ -73,8 +73,8 @@ export default function CTASection() {
               <div>
                 <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/90 backdrop-blur">
                   <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C17A3E] opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C17A3E]" />
+                    {/* <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C17A3E] opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C17A3E]" /> */}
                   </span>
                   Start A Project
                 </div>
