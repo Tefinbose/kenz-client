@@ -16,18 +16,25 @@ export async function GET(req: NextRequest) {
 
     await connectDB();
 
-    let accoladeDoc = await Accolade.findOne({ isDefault: true });
+    let accoladeDoc = await Accolade.findOne({ isDefault: true }).lean();
     if (!accoladeDoc) {
-      accoladeDoc = await Accolade.create({
+      const created = await Accolade.create({
         ...initialAccoladesData,
         isDefault: true,
       });
+      accoladeDoc = created.toObject();
     }
 
-    return NextResponse.json({
-      success: true,
-      data: accoladeDoc,
-    });
+    return NextResponse.json(
+      { success: true, data: accoladeDoc },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
     console.error("Admin accolades GET error:", error);
     return NextResponse.json(
@@ -59,25 +66,33 @@ export async function PUT(req: NextRequest) {
     if (body.cta !== undefined) updatePayload.cta = body.cta;
     if (body.meta !== undefined) updatePayload.meta = body.meta;
 
+    // First ensure a document exists (seed if needed)
+    const existing = await Accolade.findOne({ isDefault: true });
+    if (!existing) {
+      await Accolade.create({ ...initialAccoladesData, isDefault: true });
+    }
+
+    // Now perform a clean atomic update with only $set — no $setOnInsert conflict
     const accoladeDoc = await Accolade.findOneAndUpdate(
       { isDefault: true },
-      {
-        $set: {
-          ...updatePayload,
-          isDefault: true,
-        },
-        $setOnInsert: {
-          ...initialAccoladesData,
-        },
-      },
-      { new: true, upsert: true, runValidators: false }
+      { $set: { ...updatePayload, updatedAt: new Date() } },
+      { new: true, upsert: false, runValidators: false, lean: true }
     );
 
-    return NextResponse.json({
-      success: true,
-      message: "Accolades and metrics updated successfully",
-      data: accoladeDoc,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Accolades and metrics updated successfully",
+        data: accoladeDoc,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
     console.error("Admin accolades PUT error:", error);
     return NextResponse.json(
