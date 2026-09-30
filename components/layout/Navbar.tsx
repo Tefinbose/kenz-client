@@ -293,9 +293,8 @@ export default function Navbar() {
     <Link
       key={link.href}
       href={link.href}
-      className={`${styles.navLink} ${styles.enter} ${
-        isActive(link.href) ? styles.navLinkActive : ""
-      }`}
+      className={`${styles.navLink} ${styles.enter} ${isActive(link.href) ? styles.navLinkActive : ""
+        }`}
       style={stagger(order)}
       aria-current={isActive(link.href) ? "page" : undefined}
       onMouseEnter={moveIndicator}
@@ -321,9 +320,8 @@ export default function Navbar() {
 
       <header
         ref={headerRef}
-        className={`${styles.navbar} ${
-          scrolled ? styles.navbarScrolled : ""
-        } ${mobileOpen ? styles.navbarOpen : ""}`}
+        className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ""
+          } ${mobileOpen ? styles.navbarOpen : ""}`}
       >
         {/* Top bar — scrolls away with the page */}
         <div
@@ -338,14 +336,14 @@ export default function Navbar() {
                 Structural steel detailing & engineering support
               </span>
             </div>
-
+            {/* 
             <div className={styles.topBarRight}>
               <span>Precision</span>
               <span className={styles.topDivider} />
               <span>Reliability</span>
               <span className={styles.topDivider} />
               <span>Excellence</span>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -389,11 +387,9 @@ export default function Navbar() {
             >
               <span
                 aria-hidden="true"
-                className={`${styles.navIndicator} ${
-                  indicator.show ? styles.navIndicatorShow : ""
-                } ${
-                  indicator.instant ? styles.navIndicatorInstant : ""
-                }`}
+                className={`${styles.navIndicator} ${indicator.show ? styles.navIndicatorShow : ""
+                  } ${indicator.instant ? styles.navIndicatorInstant : ""
+                  }`}
                 style={
                   {
                     "--x": `${indicator.x}px`,
@@ -424,9 +420,8 @@ export default function Navbar() {
               >
                 <button
                   type="button"
-                  className={`${styles.navLink} ${
-                    servicesActive ? styles.navLinkActive : ""
-                  } ${servicesOpen ? styles.navLinkOpen : ""}`}
+                  className={`${styles.navLink} ${servicesActive ? styles.navLinkActive : ""
+                    } ${servicesOpen ? styles.navLinkOpen : ""}`}
                   // Mouse clicks keep the menu open (hover already opened it);
                   // keyboard activation (detail === 0) toggles it.
                   onClick={(event) =>
@@ -446,18 +441,16 @@ export default function Navbar() {
 
                   <ChevronDown
                     size={14}
-                    className={`${styles.chevron} ${
-                      servicesOpen ? styles.chevronOpen : ""
-                    }`}
+                    className={`${styles.chevron} ${servicesOpen ? styles.chevronOpen : ""
+                      }`}
                   />
                 </button>
 
                 {/* Compact dropdown, anchored under the button */}
                 <div
                   id="services-menu"
-                  className={`${styles.dropdown} ${
-                    servicesOpen ? styles.dropdownVisible : ""
-                  }`}
+                  className={`${styles.dropdown} ${servicesOpen ? styles.dropdownVisible : ""
+                    }`}
                 >
                   <div className={styles.dropdownPanel}>
                     <div className={styles.dropdownGrid}>
@@ -468,11 +461,10 @@ export default function Navbar() {
                           <Link
                             key={service.href}
                             href={service.href}
-                            className={`${styles.serviceItem} ${
-                              isActive(service.href)
+                            className={`${styles.serviceItem} ${isActive(service.href)
                                 ? styles.serviceItemActive
                                 : ""
-                            }`}
+                              }`}
                             style={stagger(index)}
                             onClick={() =>
                               setServicesOpen(false)
@@ -560,9 +552,8 @@ export default function Navbar() {
           layer and transform can never affect its fixed positioning */}
       <div
         id="mobile-menu"
-        className={`${styles.mobileMenu} ${
-          mobileOpen ? styles.mobileMenuOpen : ""
-        }`}
+        className={`${styles.mobileMenu} ${mobileOpen ? styles.mobileMenuOpen : ""
+          }`}
       >
         <div className={styles.mobileMenuInner}>
           <nav className={styles.mobileNav} aria-label="Mobile">
@@ -570,11 +561,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`${styles.mobileNavLink} ${styles.mobileItem} ${
-                  isActive(link.href)
+                className={`${styles.mobileNavLink} ${styles.mobileItem} ${isActive(link.href)
                     ? styles.mobileNavLinkActive
                     : ""
-                }`}
+                  }`}
                 style={stagger(i)}
                 onClick={link.href === "/" ? handleHomeNavigation : closeMobileMenu}
                 aria-current={
@@ -592,11 +582,10 @@ export default function Navbar() {
             >
               <button
                 type="button"
-                className={`${styles.mobileServicesButton} ${
-                  servicesActive
+                className={`${styles.mobileServicesButton} ${servicesActive
                     ? styles.mobileNavLinkActive
                     : ""
-                }`}
+                  }`}
                 onClick={() =>
                   setMobileServicesOpen((value) => !value)
                 }
@@ -606,20 +595,18 @@ export default function Navbar() {
 
                 <ChevronDown
                   size={18}
-                  className={`${styles.mobileChevron} ${
-                    mobileServicesOpen
+                  className={`${styles.mobileChevron} ${mobileServicesOpen
                       ? styles.mobileChevronOpen
                       : ""
-                  }`}
+                    }`}
                 />
               </button>
 
               <div
-                className={`${styles.mobileServicesList} ${
-                  mobileServicesOpen
+                className={`${styles.mobileServicesList} ${mobileServicesOpen
                     ? styles.mobileServicesListOpen
                     : ""
-                }`}
+                  }`}
               >
                 <div className={styles.mobileServicesInner}>
                   {services.map((service) => {
@@ -645,11 +632,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`${styles.mobileNavLink} ${styles.mobileItem} ${
-                  isActive(link.href)
+                className={`${styles.mobileNavLink} ${styles.mobileItem} ${isActive(link.href)
                     ? styles.mobileNavLinkActive
                     : ""
-                }`}
+                  }`}
                 style={stagger(i + 3)}
                 onClick={closeMobileMenu}
                 aria-current={

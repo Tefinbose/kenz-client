@@ -49,27 +49,29 @@ export async function PUT(req: NextRequest) {
 
     const body = await req.json();
 
-    let accoladeDoc = await Accolade.findOne({ isDefault: true });
+    const updatePayload: Record<string, unknown> = {};
+    if (body.metrics !== undefined) updatePayload.metrics = body.metrics;
+    if (body.recognitions !== undefined) updatePayload.recognitions = body.recognitions;
+    if (body.certifications !== undefined) updatePayload.certifications = body.certifications;
+    if (body.endorsements !== undefined) updatePayload.endorsements = body.endorsements;
+    if (body.hero !== undefined) updatePayload.hero = body.hero;
+    if (body.philosophy !== undefined) updatePayload.philosophy = body.philosophy;
+    if (body.cta !== undefined) updatePayload.cta = body.cta;
+    if (body.meta !== undefined) updatePayload.meta = body.meta;
 
-    if (!accoladeDoc) {
-      accoladeDoc = await Accolade.create({
-        ...initialAccoladesData,
-        ...body,
-        isDefault: true,
-      });
-    } else {
-      // Deep merge updates or assign fields
-      if (body.metrics) accoladeDoc.metrics = body.metrics;
-      if (body.recognitions) accoladeDoc.recognitions = body.recognitions;
-      if (body.certifications) accoladeDoc.certifications = body.certifications;
-      if (body.endorsements) accoladeDoc.endorsements = body.endorsements;
-      if (body.hero) accoladeDoc.hero = { ...accoladeDoc.hero, ...body.hero };
-      if (body.philosophy) accoladeDoc.philosophy = { ...accoladeDoc.philosophy, ...body.philosophy };
-      if (body.cta) accoladeDoc.cta = { ...accoladeDoc.cta, ...body.cta };
-      if (body.meta) accoladeDoc.meta = { ...accoladeDoc.meta, ...body.meta };
-
-      await accoladeDoc.save();
-    }
+    const accoladeDoc = await Accolade.findOneAndUpdate(
+      { isDefault: true },
+      {
+        $set: {
+          ...updatePayload,
+          isDefault: true,
+        },
+        $setOnInsert: {
+          ...initialAccoladesData,
+        },
+      },
+      { new: true, upsert: true, runValidators: false }
+    );
 
     return NextResponse.json({
       success: true,

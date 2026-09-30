@@ -20,21 +20,37 @@ export async function GET() {
       accoladeDoc = created.toObject();
     }
 
-    return NextResponse.json({
-      success: true,
-      data: accoladeDoc,
-      source: "database",
-      timestamp: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: accoladeDoc,
+        source: "database",
+        timestamp: new Date().toISOString(),
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
     console.error("Public accolades GET error:", error);
     // Graceful fallback to initial static data
-    return NextResponse.json({
-      success: true,
-      data: initialAccoladesData,
-      source: "static_fallback",
-      error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: initialAccoladesData,
+        source: "static_fallback",
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString(),
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      }
+    );
   }
 }

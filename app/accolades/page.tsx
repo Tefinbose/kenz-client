@@ -35,7 +35,13 @@ export default function AccoladesPage() {
     async function loadAccolades() {
       try {
         setIsLoading(true);
-        const res = await fetch("/api/accolades");
+        const res = await fetch(`/api/accolades?_t=${Date.now()}`, {
+          cache: "no-store",
+          headers: {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+          },
+        });
         if (res.ok) {
           const json = await res.json();
           if (json?.data && isMounted) {
@@ -54,12 +60,18 @@ export default function AccoladesPage() {
     };
   }, []);
 
-  const categories = ["All", "Award", "Standard", "Milestone", "Certification"];
+  const customCategories = Array.from(
+    new Set((data.recognitions || []).map((r) => r.category).filter(Boolean))
+  );
+  const categories = [
+    "All",
+    ...Array.from(new Set(["Award", "Standard", "Milestone", "Certification", ...customCategories])),
+  ];
 
   const filteredRecognitions =
     selectedCategory === "All"
-      ? data.recognitions
-      : data.recognitions.filter((item) => item.category === selectedCategory);
+      ? (data.recognitions || [])
+      : (data.recognitions || []).filter((item) => item.category === selectedCategory);
 
   return (
     <main className="min-h-screen bg-[#fafbfc] overflow-hidden text-navy-950">
@@ -169,21 +181,21 @@ export default function AccoladesPage() {
                 </div>
               </div>
 
-              {/* 3 Telemetry Metrics */}
-              <div className="mt-7 grid grid-cols-3 gap-2.5 rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-                <div className="rounded-xl border border-white/5 bg-white/5 py-2.5">
-                  <p className="font-display text-xl text-copper-300 sm:text-2xl">50k+</p>
-                  <p className="text-[9px] uppercase tracking-wider text-steel-400">Tons Modeled</p>
+              {/* Dynamic Telemetry Metrics from backend data.metrics */}
+              {data.metrics && data.metrics.length > 0 && (
+                <div className="mt-7 grid grid-cols-3 gap-2.5 rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
+                  {data.metrics.slice(0, 3).map((metric, mIdx) => (
+                    <div key={mIdx} className="rounded-xl border border-white/5 bg-white/5 py-2.5 px-1 min-w-0">
+                      <p className="font-display text-xl text-copper-300 sm:text-2xl truncate" title={metric.value}>
+                        {metric.value}
+                      </p>
+                      <p className="text-[9px] uppercase tracking-wider text-steel-400 truncate" title={metric.label}>
+                        {metric.label}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-                <div className="rounded-xl border border-white/5 bg-white/5 py-2.5">
-                  <p className="font-display text-xl text-copper-300 sm:text-2xl">99.4%</p>
-                  <p className="text-[9px] uppercase tracking-wider text-steel-400">1st Pass Approval</p>
-                </div>
-                <div className="rounded-xl border border-white/5 bg-white/5 py-2.5">
-                  <p className="font-display text-xl text-copper-300 sm:text-2xl">&lt; 24h</p>
-                  <p className="text-[9px] uppercase tracking-wider text-steel-400">RFI Support</p>
-                </div>
-              </div>
+              )}
 
               {/* Quick Jump Action */}
               <a
@@ -200,6 +212,30 @@ export default function AccoladesPage() {
         {/* Bottom Accent Gradient Beam */}
         <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-copper-500/60 to-transparent" />
       </section>
+
+      {/* ── VERIFIED OPERATIONAL METRICS (LIVE BACKEND DATA) ────────────── */}
+      {data.metrics && data.metrics.length > 0 && (
+        <section className="relative z-10 -mt-12 mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 rounded-3xl border border-white/10 bg-[#0A1420]/95 p-6 shadow-2xl backdrop-blur-xl">
+            {data.metrics.map((m, idx) => (
+              <div key={idx} className="border-l-2 border-copper-500/50 pl-4 py-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-copper-400">
+                  {m.badge}
+                </span>
+                <div className="mt-1 font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                  {m.value}
+                </div>
+                <div className="text-xs font-semibold text-steel-200">
+                  {m.label}
+                </div>
+                <p className="mt-0.5 text-[11px] text-steel-400 line-clamp-2">
+                  {m.subtext}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── 2. RECOGNITION & ACHIEVEMENT SECTION ───────────────────────── */}
       <section id="recognition-section" className="py-24 md:py-32">
